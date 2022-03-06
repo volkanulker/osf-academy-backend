@@ -1,0 +1,50 @@
+<%- include('./partials/head.ejs') %> 
+<%- include('./partials/nav.ejs') %> 
+<%-include('./partials/breadcrumb.ejs') %>
+
+<div class="container h-100">
+
+  <div class="row align-items-center h-100">
+    <div class="col-4 mx-auto">
+      <img
+        src="/images/products/large/70284588_100_0.jpg"
+        class="img-fluid"
+        alt="test"
+      />
+    </div>
+
+    <div class="col-8 mx-auto">
+      <div class="card-block px-2">
+        <h4 class="card-title">Product Name</h4>
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="row">
+          <div class="col col-sm-4">
+            <a href="#" class="btn btn-primary">Buy Now</a>
+          </div>
+          <div class="col col-sm-8">
+            <div class="row">
+              <div class="col col-sm-6">
+                <p>Price: 123.00</p>
+              </div>
+
+              <div class="col col-sm-6">
+                <select
+                  class="custom-select sm-1 form-control-sm"
+                  id="inlineFormCustomSelect"
+                >
+                  <option selected>Choose...</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<%- include('./partials/footer.ejs') %>
