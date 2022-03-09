@@ -1,0 +1,22 @@
+<%- include("../partials/head.ejs") %>
+
+<div class="container">
+    <%- include("../partials/nav.ejs") %> 
+
+    <%- include("../partials/breadcrumb.ejs")%>
+<% parentCategories.forEach( category => { %>
+
+    <div class="card mb-3">
+        <img class="card-img-top" src="../../images/<%= category.image %>" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title"><%= category.page_title %></h5>
+          <p class="card-text"><%= category.page_description  %></p>
+          <a href="#" class="btn btn-dark">View Subcategories</a>
+        </div>
+      </div>
+
+    <% }) %>
+
+</div>
+
+<%- include('../partials/bottom.ejs') %>
