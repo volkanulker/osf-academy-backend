@@ -1,23 +1,15 @@
 <%- include("../partials/head.ejs") %>
 
-<h2>Main Category Name</h2>
-
-<p>Main Category Description</p>
-
-
 <div class="container">
     <%- include("../partials/nav.ejs") %> 
 
     <%- include("../partials/breadcrumb.ejs")%>
 
-    <h2>Main Category Name</h2>
-
-    <p>Category Description</p>
 
 <% subCategories.forEach( category => { %>
     <h2><%= category.name %></h2>
-    <div class="card mb-3">
-        <img class="card-img-top" src="../images/<%= category.image %>" alt="Card image cap">
+    <div class="card mb-5">
+        <img class="card-img-top" src="../../images/<%= category.image %>" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title"><%= category.page_title %></h5>
           <p class="card-text"><%= category.page_description  %></p>

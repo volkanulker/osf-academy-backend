@@ -85,4 +85,5 @@ module.exports = {
   getCategoriesByParentId: getCategoriesByParentId,
   getCategoryById: getCategoryById,
   getAllParentCategories: getAllParentCategories,
+  getAllSubCategories:getAllSubCategories
 };
