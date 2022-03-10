@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
+
 app.use('/category', categoryRouter)
 
 app.use('/product',productRouter)

@@ -16,26 +16,13 @@ router.get(`/:gender/parent-category-selection`,(req, res, next) => {
     
 })
 
-router.get(`/:gender/sub-category-selection`,(req, res, next) => {
-  const gender = req.params.gender
-  categoryRequest.getAllParentCategories(gender, (error, data) => {
-    if(!error){
-      res.render('category/parentCategorySelection', {parentCategories:data});
-    }else {
-      res.render('error', {message:'An error occured.'})
-    }
-  })
-
-})
-
-
 router.get('/:gender/:parentCategoryName', (req,res,next) => {
   const gender = req.params.gender
   const parentCategoryName = req.params.parentCategoryName
 
   categoryRequest.getAllSubCategories(gender,parentCategoryName,(error, data) => {
     if(!error){
-      res.render('category/subCategorySelection', {subCategories:data})
+      res.render('category/subCategorySelection', {subCategories:data, gender:gender, })
     } else {
       res.render('error', {message:'An error occured.'})
     }
