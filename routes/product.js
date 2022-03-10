@@ -8,14 +8,16 @@ router.get("/:subCategory", function (req, res, next) {
   productRequest.getProductByCategoryId(subCategory, (error, data) => {
     if (error) {
       return res.render('error', {message:'An error occured'})
-    } else if (data.error) {
+    } 
+
+    if (data.error) {
       return res.render('error', {message:data.error})
     } else {
       let halfwayThrough = Math.ceil(data.length / 2);
       const productsOnLeft = data.slice(0, halfwayThrough);
       const productsOnRight = data.slice(halfwayThrough, data.length);
 
-      res.render("./product/productCard", {
+      return res.render("./product/productCard", {
         productsOnLeft, productsOnRight,
       });
     }
@@ -27,14 +29,18 @@ router.get("/:subCategory/:productId", function (req, res, next) {
   productRequest.getProductById(productId, (error, data) => {
     if (error) {
       return res.render('error', {message:'An error occured'})
-    } else{
+    } 
+    if(data.error){
+      return res.render('error', {message:data.error})
+    }
+    else{
       const name = data[0].name
       const description = data[0].long_description
       const price = data[0].price
       const currency = data[0].currency
       const images = data[0].image_groups[0].images
       console.log(images)
-      res.render('./product/productDetail', {name, description, price, currency, images})
+      return res.render('./product/productDetail', {name, description, price, currency, images})
     }
   })
 
