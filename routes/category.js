@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var categoryRequest = require('../requests/category/category')
+const express = require('express');
+const router = express.Router();
+const categoryRequest = require('../requests/category')
 
 router.get(`/:gender`,(req, res, next) => {
     const gender = req.params.gender
