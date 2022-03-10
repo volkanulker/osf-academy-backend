@@ -7,9 +7,9 @@ router.get("/:subCategory", function (req, res, next) {
 
   productRequest.getProductByCategoryId(subCategory, (error, data) => {
     if (error) {
-      return console.log(error);
+      return res.render('error', {message:'An error occured'})
     } else if (data.error) {
-      return res.render('error')
+      return res.render('error', {message:data.error})
     } else {
       let halfwayThrough = Math.ceil(data.length / 2);
       const productsOnLeft = data.slice(0, halfwayThrough);

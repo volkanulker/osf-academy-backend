@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var productRouter = require('./routes/product')
 var categoryRouter = require('./routes/category')
-
+var errorRouter = require('./routes/errortest')
 
 var app = express();
 
@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
+app.use('/error', errorRouter)
 
 app.use('/category', categoryRouter)
 
@@ -39,6 +40,10 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  // render 404 not found page
+  if(err.status === 404){
+    return res.render('404')
+  }
   // render the error page
   res.status(err.status || 500);
   res.render('error');
