@@ -33,15 +33,15 @@ router.get("/:subCategory/:productId", function (req, res, next) {
     if(data.error){
       return res.render('error', {message:data.error})
     }
-    else{
-      const name = data[0].name
-      const description = data[0].long_description
-      const price = data[0].price
-      const currency = data[0].currency
-      const images = data[0].image_groups[0].images
-      console.log(images)
-      return res.render('./product/productDetail', {name, description, price, currency, images})
-    }
+
+    const name = data[0].name
+    const description = data[0].long_description
+    const price = data[0].price
+    const currency = data[0].currency
+    const images = data[0].image_groups[0].images
+    console.log(images)
+    return res.render('./product/productDetail', {name, description, price, currency, images})
+    
   })
 
 });
