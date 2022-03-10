@@ -16,15 +16,28 @@ router.get("/:subCategory", function (req, res, next) {
       const productsOnRight = data.slice(halfwayThrough, data.length);
 
       res.render("./product/productCard", {
-        productsOnLeft: productsOnLeft,
-        productsOnRight: productsOnRight,
+        productsOnLeft, productsOnRight,
       });
     }
   });
 });
 
-router.get("/product-detail", function (req, res, next) {
-  res.render("product/productDetail");
+router.get("/:subCategory/:productId", function (req, res, next) {
+  const productId = req.params.productId
+  productRequest.getProductById(productId, (error, data) => {
+    if (error) {
+      return res.render('error', {message:'An error occured'})
+    } else{
+      const name = data[0].name
+      const description = data[0].long_description
+      const price = data[0].price
+      const currency = data[0].currency
+      const images = data[0].image_groups[0].images
+      console.log(images)
+      res.render('./product/productDetail', {name, description, price, currency, images})
+    }
+  })
+
 });
 
 module.exports = router;

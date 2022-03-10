@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var productRouter = require('./routes/product')
 var categoryRouter = require('./routes/category')
-var errorRouter = require('./routes/errortest')
+
 
 var app = express();
 
@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
-app.use('/error', errorRouter)
+
 
 app.use('/category', categoryRouter)
 

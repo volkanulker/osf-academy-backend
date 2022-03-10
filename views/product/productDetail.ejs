@@ -15,14 +15,13 @@
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="/images/products/large/70284588_100_0.jpg" class="d-block w-100" alt="...">
+            <img src="/images/<%= images[0].link %>" class="d-block w-100" alt="<%= images[0].alt %>">
           </div>
+          <% for(let i = 1; i< images.length; i++) { %>
           <div class="carousel-item">
-            <img src="/images/products/large/70284588_100_A0.jpg" class="d-block w-100" alt="...">
+            <img src="/images/<%= images[i].link %>" class="d-block w-100" alt="<%= images[i].alt %>">
           </div>
-          <div class="carousel-item">
-            <img src="/images/products/large/70284588_100_0.jpg" class="d-block w-100" alt="...">
-          </div>
+         <% } %>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
@@ -39,16 +38,16 @@
 
     <div class="col-8 mx-auto">
       <div class="card-block px-2">
-        <h4 class="card-title">Product Name</h4>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <div class="row">
+        <h4 class="card-title"><%= name %></h4>
+        <p class="card-text"><%- description %></p>
+        <div class="row mt-5">
           <div class="col col-sm-4">
             <a href="#" class="btn btn-primary">Buy Now</a>
           </div>
           <div class="col col-sm-8">
             <div class="row">
               <div class="col col-sm-6">
-                <p>Price: 123.00</p>
+                <p>Price: <%= price %> <%= currency %> </p>
               </div>
 
               <div class="col col-sm-6">
@@ -56,10 +55,9 @@
                   class="custom-select sm-1 form-control-sm"
                   id="inlineFormCustomSelect"
                 >
-                  <option selected>Choose...</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option selected>Currency</option>
+                  <option value="1"><%= currency %></option>
+                  
                 </select>
               </div>
             </div>
