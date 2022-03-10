@@ -4,7 +4,12 @@ var categoryRequest = require('../requests/category/category')
 
 /* GET home page. */
 router.get('/',(req, res, next) => {
-      res.render('index');
+      res.redirect('/home')
+})
+
+
+router.get('/home', (req, res, next) => {
+      res.render('home')
 })
 
   

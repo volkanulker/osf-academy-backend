@@ -9,8 +9,6 @@ var productRouter = require('./routes/product')
 var categoryRouter = require('./routes/category')
 
 
-
-
 var app = express();
 
 // view engine setup
@@ -26,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 
-app.use('/category', categoryRouter)
+app.use('/home', categoryRouter)
 
 app.use('/product',productRouter)
 

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var categoryRequest = require('../requests/category/category')
 
-router.get(`/:gender/parent-category-selection`,(req, res, next) => {
+router.get(`/:gender`,(req, res, next) => {
     const gender = req.params.gender
 
     categoryRequest.getAllParentCategories(gender, (error, data) => {
