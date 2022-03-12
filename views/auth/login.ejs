@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+  integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+  crossorigin="anonymous"
+/>
+  <link rel="stylesheet" href="/stylesheets/auth.css"/>
+
+  <title>OSF Academy Backend</title>
+ 
+
+  
+</head>
+
+<body>
+
+<div class="container">
+    <%- include("../partials/nav.ejs") %> 
+    
+        <div class="col-6 mx-auto">
+            <div class="mt-5 mb-5">
+                <form action="/auth/login">
+                    <h2>Login</h2>
+                    <label for="email">Email</label>
+                    <input type="text" name="email"  />
+                    <div class="email error"></div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password"  />
+                    <div class="password error"></div>
+                    <button>login</button>
+                  </form>
+            </div>
+        </div>
+        
+   
+    
+  
+    
+
+
+    <%- include('../partials/footer.ejs') %>
+</div>
+
+
+<%- include('../partials/bottom.ejs') %>
