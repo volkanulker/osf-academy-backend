@@ -1,14 +1,22 @@
-<nav class="navbar navbar-dark bg-dark justify-content-between">
+<nav class="navbar navbar-dark bg-dark py-3 justify-content-between">
   <a class="navbar-brand" href="/">ALIBAZON</a>
-  <div class="row">
-    <a class="nav-link" href="/category/mens/parent-category-selection">Mens</a>
-    <a class="nav-link" href="/category/womens/parent-category-selection">Womens</a>
-    <button class="btn btn-dark my-2 my-sm-0 mr-4" type="submit">
-      Sign In
-    </button>
-      <button class="btn btn-dark my-2 my-sm-0 mr-4" type="submit">
-        Sign Up
-      </button>
-  </div>
 
+    <ul class="navbar-nav">
+      <div class="row">
+        
+        <li class="nav-item mr-5"><a class="nav-link" href="/category/mens/">Mens</a></li>
+        <li class="nav-item mr-5"><a class="nav-link" href="/category/womens/">Womens</a></li>
+        <% if(user) { %>
+          <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/logout">Log out</a></li>
+        <% } else { %>  
+          <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/signin">Sign In</a></li>
+          <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/signup">Sign Up</a></li>
+        <% } %>
+      </div>
+      
+    </ul>
+    
 </nav>
+
+
+

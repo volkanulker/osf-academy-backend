@@ -31,6 +31,7 @@ router.post('/signin', async (req, res) => {
             const { token } = data
             const { user } = data
             res.cookie('jwt', token, { httpOnly:true })
+            res.cookie('email', user.email, { httpOnly:true })
             return res.status(201).json( { user: user._id })
         }
 
@@ -64,6 +65,7 @@ router.post('/signup', (req, res) => {
             const { token } = data
             const { user } = data
             res.cookie('jwt', token, { httpOnly:true })
+            res.cookie('email', user.email, { httpOnly:true })
             return res.status(201).json( { user: user._id })
         }
 
@@ -74,6 +76,13 @@ router.post('/signup', (req, res) => {
 
     })
 
+})
+
+
+router.get('/logout', (req, res) => {
+    res.cookie('jwt', '', { maxAge:1 })
+    res.cookie('email', '', { maxAge:1 })
+    res.redirect('/')
 })
 
 
