@@ -9,6 +9,7 @@ const indexRouter = require('./routes/index');
 const productRouter = require('./routes/product')
 const categoryRouter = require('./routes/category')
 const authRouter = require('./routes/auth')
+const searchRouter = require('./routes/search')
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.get('*', checkUser )
 app.use('/', indexRouter);
 
 app.use('/auth', authRouter)
+
+app.use('/search', searchRouter)
 
 app.use('/category', categoryRouter)
 

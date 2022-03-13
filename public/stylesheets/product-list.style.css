@@ -61,9 +61,7 @@
     box-shadow: 4px 3px 24px -10px rgba(0,0,0,0.56);   
 }
 
-.text-header{
-    
-}
+
 .card-preview>a{
     text-decoration: none;
     font-size: 1.3rem;
@@ -122,9 +120,6 @@
 }
 
 
-.card-text-container p, h3{
-    /* border: 1px solid black; */
-}
 
 .card-text-container .footer{
     font-size: 0.9rem;
