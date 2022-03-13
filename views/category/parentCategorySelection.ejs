@@ -2,8 +2,8 @@
 
 <div class="container">
     <%- include("../partials/nav.ejs") %> 
-
-    <%- include("../partials/breadcrumb.ejs")%>
+    <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
+    
 <% parentCategories.forEach( category => { %>
 
     <div class="card mb-5">

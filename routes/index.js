@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const breadcrumbUtils = require('../utils/breadcrumb')
 
 
 /* GET home page. */
@@ -9,7 +10,8 @@ router.get('/',(req, res, next) => {
 
 
 router.get('/home', (req, res, next) => {
-      res.render('home')
+      
+      res.render('home', {breadcrumbObjects:null})
 })
 
   

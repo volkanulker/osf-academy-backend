@@ -1,5 +1,11 @@
-<ul class="breadcrumb mt-2 mb-5" style="background: none;">
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item"><a href="#">Subcategory Name</a></li>
-  <li class="breadcrumb-item"><a href="#">Product Name</a></li>
+
+
+<ul class="breadcrumb mt-2 mb-5">
+    <li class="breadcrumb-item"><a href="/">HOME</a></li>
+    <% if(breadcrumbObjects) {%>
+      <% breadcrumbObjects.forEach( obj => { %>
+        <li class="breadcrumb-item"><a href="<%= obj.href %>"><%= obj.path.toUpperCase() %></a></li>
+      <% }) %>
+    <% } %>
+
 </ul>

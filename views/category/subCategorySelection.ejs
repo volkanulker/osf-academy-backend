@@ -3,8 +3,7 @@
 <div class="container">
     <%- include("../partials/nav.ejs") %> 
 
-    <%- include("../partials/breadcrumb.ejs")%>
-
+    <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
 
 <% subCategories.forEach( category => { %>
     <h2><%= category.name %></h2>

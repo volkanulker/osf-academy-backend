@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productRequest = require("../requests/product");
+const breadcrumbUtils = require('../utils/breadcrumb')
 
 router.get("/:subCategory", function (req, res, next) {
   const subCategory = req.params.subCategory;
@@ -16,13 +17,26 @@ router.get("/:subCategory", function (req, res, next) {
       let halfwayThrough = Math.ceil(data.length / 2);
       const productsOnLeft = data.slice(0, halfwayThrough);
       const productsOnRight = data.slice(halfwayThrough, data.length);
-
+      const url = req.url
+      const paths = breadcrumbUtils.getBreadcrumbPaths(url)
+      const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(paths,'/product')
       return res.render("./product/productCard", {
-        productsOnLeft, productsOnRight,
+        productsOnLeft, productsOnRight, breadcrumbObjects
       });
     }
   });
 });
+
+/*
+* Method to pop product id from pop 
+* and push product name for understandable breadcrumb navs
+*/
+const getBreadcrumbNavs = (url,name) => {
+  let paths = breadcrumbUtils.getBreadcrumbPaths(url)
+  paths.pop()
+  paths.push(name)
+  return paths
+}
 
 router.get("/:subCategory/:productId", function (req, res, next) {
   const productId = req.params.productId
@@ -39,8 +53,11 @@ router.get("/:subCategory/:productId", function (req, res, next) {
     const price = data[0].price
     const currency = data[0].currency
     const images = data[0].image_groups[0].images
-    console.log(images)
-    return res.render('./product/productDetail', {name, description, price, currency, images})
+
+    const url = req.url
+    const paths = getBreadcrumbNavs(url, name)
+    const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(paths,'/product')
+    return res.render('./product/productDetail', {name, description, price, currency, images, breadcrumbObjects})
     
   })
 
