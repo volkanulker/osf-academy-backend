@@ -1,7 +1,7 @@
 // check current user
 // we must verify token with jwt.sign() method but we get token
 // from an api so simple token check implemented
-const checkUser = (req, res, next) => {
+module.exports.checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   const email = req.cookies.email;
 
@@ -16,8 +16,4 @@ const checkUser = (req, res, next) => {
     res.locals.user = null;
     next();
   }
-};
-
-module.exports = {
-  checkUser,
 };

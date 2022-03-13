@@ -9,7 +9,7 @@ const secretKey =
 
 const errMessage = "Unable to connect to the Backend Service!";
 
-const signup = (name, email, password, callback) => {
+module.exports.signup = (name, email, password, callback) => {
     const url = urlBase + "/signup";
   
     request(
@@ -38,7 +38,7 @@ const signup = (name, email, password, callback) => {
   };
 
 
-const signin = (email, password, callback) => {
+module.exports.signin = (email, password, callback) => {
     const url = urlBase + "/signin";
   
     request(
@@ -64,8 +64,3 @@ const signin = (email, password, callback) => {
     );
     
 };
-
-module.exports = {
-    signup,
-    signin
-}

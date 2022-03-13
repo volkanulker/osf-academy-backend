@@ -9,7 +9,7 @@ const secretKey ="$2a$08$snapaHu1X69uonct1IluteSCG4e1QJAUmtWSmEoX8lroGixq5/UqS"
 const errMessage = 'Unable to connect to the Backend Service!'
 
 
-const getProductById = (id, callback) => {
+module.exports.getProductById = (id, callback) => {
     const url =`${urlBase}?id=${id}&secretKey=${secretKey}`
 
     request({url:url, json:true}, (error, response) => {
@@ -24,7 +24,7 @@ const getProductById = (id, callback) => {
 
 
 
-const getProductByCategoryId = (id, callback) => {
+module.exports.getProductByCategoryId = (id, callback) => {
     const url =`${urlBase}?primary_category_id=${id}&secretKey=${secretKey}`
 
     request({url:url, json:true}, (error, response) => {
@@ -37,9 +37,3 @@ const getProductByCategoryId = (id, callback) => {
     }) 
 }
 
-
-
-module.exports = {
-    getProductById:getProductById,
-    getProductByCategoryId:getProductByCategoryId
-}

@@ -49,7 +49,7 @@ const getCategoryById = (categoryId, callback) => {
   });
 };
 
-const getAllParentCategories = (gender, callback) => {
+module.exports.getAllParentCategories = (gender, callback) => {
   getAllCategories((error, data) => {
     if (error) {
       callback(error, undefined);
@@ -59,17 +59,12 @@ const getAllParentCategories = (gender, callback) => {
         (category) => category["parent_category_id"] === gender
       );
 
-      // let parentCategoryNames = [];
-      // parentCategoryObjects.forEach((categoryObject) => {
-      //   parentCategoryNames.push(categoryObject.name);
-      // });
-
       callback(undefined, parentCategoryObjects);
     }
   });
 };
 
-const getAllSubCategories = (gender, parentCategoryName, callback) => {
+module.exports.getAllSubCategories = (gender, parentCategoryName, callback) => {
   getCategoriesByParentId(gender + "-" + parentCategoryName.toLowerCase(),
     (error, data) => {
       if (error) {
@@ -80,10 +75,3 @@ const getAllSubCategories = (gender, parentCategoryName, callback) => {
   );
 };
 
-module.exports = {
-  getAllCategories: getAllCategories,
-  getCategoriesByParentId: getCategoriesByParentId,
-  getCategoryById: getCategoryById,
-  getAllParentCategories: getAllParentCategories,
-  getAllSubCategories:getAllSubCategories
-};
