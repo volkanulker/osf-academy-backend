@@ -20,7 +20,7 @@ router.get("/:subCategory", function (req, res, next) {
       const url = req.url
       const paths = breadcrumbUtils.getBreadcrumbPaths(url)
       const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(paths,'/product')
-      return res.render("./product/productCard", {
+      return res.render("./product/productPage", {
         productsOnLeft, productsOnRight, breadcrumbObjects
       });
     }

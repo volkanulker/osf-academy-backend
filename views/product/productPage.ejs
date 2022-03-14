@@ -1,0 +1,42 @@
+
+
+<%- include("../partials/headUpper.ejs",{title:'Alibazon - Products'}) %>
+
+
+<%- include("../partials/headBottom.ejs") %>
+
+
+<div class="container">
+
+<%- include('../partials/nav.ejs') %> 
+<%-include('../partials/breadcrumb.ejs') %>
+
+
+  <div class="row">
+    <div class="col sm-6">
+
+      <% productsOnLeft.forEach( product => { %>
+        
+        <%- include('./productCard.ejs', {product:product}) %>
+
+      <% }) %>
+    </div>
+
+
+    <div class="col sm-6">
+
+      <% productsOnRight.forEach( product => { %>
+    
+        <%- include('./productCard.ejs', {product:product}) %>
+
+      <% }) %>
+    </div>
+
+
+  </div>
+  <%- include('../partials/footer.ejs') %>
+</div>
+
+<%- include('../partials/bottom.ejs') %>
+
+
