@@ -23,6 +23,20 @@ module.exports.getProductById = (id, callback) => {
 }
 
 
+module.exports.getAllProducts = (callback) => {
+    const url = `${urlBase}?secretKey=${secretKey}`
+
+    request({ url:url, json:true }, (error, response) => {
+        if(error){
+            callback(errMessage, undefined)
+        } else{
+            const data = response.body
+            callback(undefined, data)
+        }
+    })
+}
+
+
 
 module.exports.getProductByCategoryId = (id, callback) => {
     const url =`${urlBase}?primary_category_id=${id}&secretKey=${secretKey}`
