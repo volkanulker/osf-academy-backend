@@ -28,6 +28,11 @@
     searchResultsEl.innerHTML = "";
     // check product name with regex
     let match = productName.match(/^[a-zA-Z]*/);
+    let match2 = productName.match(/\s*/)
+    if(match2[0] === productName){
+      messageEl.textContent = "No product found by this name"
+      return;
+    }
     if (match[0] === productName) {
       try {
         const res = await fetch("/search", {
@@ -76,7 +81,7 @@
           });
         }
       } catch (err) {
-        messageEl.textContent = err;
+        messageEl.textContent = "No product found by this name";
       }
     } else{
       messageEl.textContent = "No product found by this name";
