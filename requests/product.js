@@ -23,17 +23,45 @@ module.exports.getProductById = (id, callback) => {
 }
 
 
-module.exports.getAllProducts = (callback) => {
-    const url = `${urlBase}?secretKey=${secretKey}`
-
+const getProductsByPage = (pageNo,callback) => {
+    let url = `${urlBase}?page=${pageNo}&secretKey=${secretKey}`
     request({ url:url, json:true }, (error, response) => {
+    
         if(error){
-            callback(errMessage, undefined)
+            return callback(errMessage, undefined)
         } else{
             const data = response.body
             callback(undefined, data)
         }
-    })
+    }) 
+}
+/*
+* Make request to api one by one to find total number of page 
+* in the api dynamically if no data.error returned by the url
+* catch error and stop while loop then get promise array
+*/
+module.exports.getAllProducts =  async (callback) => {
+    var productArr = []
+    let pageNo = 1
+    let isAllPageSearched = false
+    while(!isAllPageSearched){
+        await new Promise((resolve, reject) => {
+            getProductsByPage(pageNo, (error, data) => {
+                if(data.error){
+                    reject(data.error)                
+                } else{
+                    resolve(data)
+                }
+            })
+        }).catch((errorMessage) => {
+            isAllPageSearched = true
+        }).then(d => {
+            productArr.push(d)
+        })
+
+        pageNo += 1
+    }
+    callback(undefined, productArr)
 }
 
 

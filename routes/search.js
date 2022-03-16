@@ -26,19 +26,28 @@ const filterProductsByName = (productName) => {
 
 router.post('/', (req, res) => {
     const productName = req.body.productName
-    console.log('---------body----------')
-    console.log(productName)
-    console.log('---------body----------')
-
-    getAllProducts((error, allProducts) => {
+    //productName.toLowerCase()
+    getAllProducts((error, data) => {
         if(error){
-            return res.status(500).json({data:[]})
+            return res.json({data:[]})
         }
-
-        const filteredProducts = allProducts.filter(p => {
-            console.log(p.name.toLowerCase() + "-" + productName.toLowerCase()+ "-" + p.name.toLowerCase().includes(productName.toLowerCase()))
-            return p.name.toLowerCase().includes(productName.toLowerCase())
-        })
+        if(data.error){
+            return res.json({data:[]})
+        }
+        let filteredProducts = []
+        // I have to use 
+        // Big-O(n^2) algorithm because api does not support 
+        // searching product by names
+        data.forEach(page => {
+            if(page !== undefined){
+                page.forEach(product => {
+                    if(product.name.toLowerCase().includes(productName)){
+                        filteredProducts.push(product)
+                    }
+                    
+                })
+            }   
+        });
 
         return res.status(201).json( {data:filteredProducts} )
     })
