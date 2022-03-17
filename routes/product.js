@@ -49,15 +49,17 @@ router.get("/:subCategory/:productId", function (req, res, next) {
     }
 
     const name = data[0].name
-    const description = data[0].long_description
+    const description = data[0].short_description
     const price = data[0].price
     const currency = data[0].currency
-    const images = data[0].image_groups[0].images
+    const productImages = data[0].image_groups[0].images
+
+    const variationAttributesArr = data[0].variation_attributes
 
     const url = req.url
     const paths = getBreadcrumbNavs(url, name)
     const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(paths,'/product')
-    return res.render('./product/productDetail', {name, description, price, currency, images, breadcrumbObjects})
+    return res.render('./product/productDetail', {name, description, price, currency, productImages,variationAttributesArr, breadcrumbObjects})
     
   })
 
