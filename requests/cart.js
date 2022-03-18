@@ -33,7 +33,7 @@ module.exports.getCart = (token, callback) =>{
     );
 }
 
-module.exports.addItem = (productId, variantId, quantity, callback) => {
+module.exports.addItem = (token, productId, variantId, quantity, callback) => {
   const url = urlBase + '/addItem' + `?secretKey=${secretKey}`;
   
   request(
@@ -62,7 +62,7 @@ module.exports.addItem = (productId, variantId, quantity, callback) => {
 }
 
 
-module.exports.removeItem = (productId, variantId,callback) => {
+module.exports.removeItem = (token, productId, variantId,callback) => {
   const url = urlBase + '/removeItem' + `?secretKey=${secretKey}`;
   request(
     {
@@ -88,7 +88,7 @@ module.exports.removeItem = (productId, variantId,callback) => {
 
 }
 
-module.exports.changeItemQuantity = (productId, variantId,quantity,callback) => {
+module.exports.changeItemQuantity = (token, productId, variantId,quantity,callback) => {
   const url = urlBase + '/changeItemQuantity' + `?secretKey=${secretKey}`;
   request(
     {

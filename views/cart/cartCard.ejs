@@ -1,85 +1,119 @@
-<div class="card mt-5">
+<div class="main-card bg-light mt-3">
   <div class="row">
-    <div class="col-md-10 cart">
-      <div class="title">
-        <div class="row">
-          <div class="col">
+    <div class="col-10">
+      <div class="row">
+        <div class="col p-4">
+          <div class="text-muted">
             <h4><b>Shopping Cart</b></h4>
           </div>
-          <div class="col align-self-center text-right text-muted">3 items</div>
+        </div>
+        <div class="col align-self-center text-right text-muted">
+          <%= cartObjects.length %> items
         </div>
       </div>
 
-    <% cartObjects.forEach( cartObj => {   %>
-      <div class="row border-top border-bottom">
-        
-          <div class="col ml-2">
-            <div class="text-muted">
-              <b><%= cartObj.name %></b>
-            </div>
-          </div>
-          <div class="col">
-            <div class="text-muted text-right">
-              <b>Price: <%= cartObj.price %>&dollar;</b>
-            </div>
-          </div>
-       
-        <div class="row main align-items-center">
-          <div class="col-2 text-center">
-            <img class="img-fluid" src="/images/<%= cartObj.image.link %>" />
-          </div>
-          <div class="col-4">
-            <div class="row text-muted">
-              <%= cartObj.description %>
-            </div>
-          </div>
+      <hr />
 
-          <div class="col-3">
-            <div class="def-number-input number-input safari_only">
-              <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
-              <input class="quantity" min="0" name="quantity" value="1" type="number">
-              <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
-            </div>
-          </div>
+      <p id="info-message"></p>
 
-          <div class="col-3">
-            <% const keys = Object.keys(cartObj.variationValues) %>
-            <% keys.forEach( (key, index) => {  %> 
-              <div class="text-muted mb-2"><%= key.toUpperCase() %>: <%= cartObj.variationValues[key] %> </div>
-              
-
-            <%  }) %>
-            <div class="row">
-              <div class="col-8">
-                <a href="#" type="button" class="btn btn-primary"
-                  >More info <i class="fa-solid fa-circle-info"></i
-                ></a>
-              </div>
-              <div class="col-4">
-                <a href="#" type="button" class="btn btn-primary"
-                  ><i class="fa-solid fa-trash"></i
-                ></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% }) %>
-    
+      <% if(cartObjects.length === 0 ) { %>
         <div class="row">
-          <a href=""><i class="fa-solid fa-arrow-left"></i></a>
-          <p>Back To Shop</p>
+          <div class="col-6">
+            <p class="text-muted">There is no item in the cart.</p>
+          </div>
         </div>
-     
-    </div>
-    <div class="col-md-2 summary">
-      <div ckass="text-center">
-        <h5><b>Summary</b></h5>
+
+      <% } else { %> 
+      
+      
+        <% cartObjects.forEach( cartObj => { %>
+        <div product-id="<%= cartObj.productId %>" variant-id="<%= cartObj.variantId %>" class="cart-card">
+          <div class="row">
+            <div class="col-2 text-center">
+              <div class="text-muted">
+                <b><%= cartObj.name %></b>
+              </div>
+              <img class="img-fluid" src="/images/<%= cartObj.image.link %>" />
+            </div>
+
+            <div class="col-4 align-self-center">
+              <div class="text-muted"><%= cartObj.description %></div>
+            </div>
+
+            <div class="col-3 align-self-center">
+              <div class="def-number-input number-input safari_only">
+                <button
+                  id="decrease-btn-cartObj.productId %>"
+                  onclick="decreaseQuantity(this)"
+                  class="minus"
+                ></button>
+                <input
+                  id="quantity-input"
+                  class="quantity"
+                  min="0"
+                  name="quantity"
+                  value="<%= cartObj.quantity %>"
+                  type="number"
+                />
+                <button
+                  id="increase-btn"
+                  onclick="increaseQuantity(this)"
+                  class="plus"
+                ></button>
+              </div>
+            </div>
+
+            <div class="col-3 align-self-center">
+              <% const keys = Object.keys(cartObj.variationValues) %> <%
+              keys.forEach( (key, index) => { %>
+              <div class="text-muted mb-2">
+                <%= key.toUpperCase() %>: <%= cartObj.variationValues[key] %>
+              </div>
+
+              <% }) %>
+              <div class="row">
+                <div class="col-8">
+                  <a
+                    href="<%= cartObj.productHref %>"
+                    type="button"
+                    class="btn btn-primary"
+                    >More info <i class="fa-solid fa-circle-info"></i
+                  ></a>
+                </div>
+                <div class="col-4">
+                  <div id="remove-btn">
+                    <button
+                    id="trash-button"
+                    onclick="deleteItem(this)"
+                    class="btn btn-primary"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <hr />
-      </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <div class="col-2 align-self-center border-left">
       <div class="text-center">
-        <p>Your cart total:</p>
-        <p>&euro; 137.00</p>
+        <div class="text-muted">
+          <h5><b>Summary</b></h5>
+        </div>
+        <hr />
+        <div class="text-muted">
+          <p><b>Your Cart Total:</b></p>
+        </div>
+        <br />
+        <div class="bg-success rounded-circle">
+          <p class="text-light">&dollar; 137.00</p>
+        </div>
+        <br />
 
         <button class="btn btn-primary">Buy Now!</button>
       </div>
