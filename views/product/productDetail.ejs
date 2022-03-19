@@ -23,13 +23,13 @@
             />
           </div>
           <% for(let i = 1; i< productImages.length; i++) { %>
-            <div class="carousel-item">
-              <img
-                src="/images/<%= productImages[i].link %>"
-                class="d-block w-100"
-                alt="<%= productImages[i].alt %>"
-              />
-            </div>
+          <div class="carousel-item">
+            <img
+              src="/images/<%= productImages[i].link %>"
+              class="d-block w-100"
+              alt="<%= productImages[i].alt %>"
+            />
+          </div>
           <% } %>
         </div>
         <a
@@ -65,37 +65,78 @@
         <div class="card-body">
           <p class="card-text"><%- description %></p>
 
-          <% variationAttributesArr.forEach( variation => { %> 
-            <%-include("./variationsCard.ejs", {variationName:
-            variation.name,variationValuesArr:variation.values,
-            variationId:variation.id }) %> 
-          <% }) %>
+          <% variationAttributesArr.forEach( variation => { %>
+          <%-include("./variationsCard.ejs", {variationName:
+          variation.name,variationValuesArr:variation.values,
+          variationId:variation.id }) %> <% }) %>
 
           <div class="row mt-5">
-            <div class="col col-sm-4">
-              <a href="#" class="btn btn-primary">Buy Now</a>
+            <div class="col-3">
+              <button class="btn btn-primary">
+                Buy Now <i class="fa-solid fa-credit-card"></i>
+              </button>
             </div>
-            <div class="col col-sm-8">
+            <div class="col-3">
+              <button
+                id="add-to-card"
+                onclick="addToCard()"
+                class="btn btn-warning"
+              >
+                Add to Cart <i class="fa-solid fa-cart-plus"></i>
+              </button>
+            </div>
+            <div class="col-6">
               <div class="row">
-                <div class="col col-sm-6">
-                  <p>Price: <%= price %> <%= currency %></p>
+                <div class="col-6 align-self-center">
+                  <p class="text-muted">
+                    <b>Price:</b> <%= price %> <%= currency %>
+                  </p>
                 </div>
+                <div class="col-6 align-self-center text-right">
+                  <div class="row">
+                    <div class="col-9">
+                      <p class="text-muted"><b>Quantity:</b></p>
+                    </div>
 
-                <div class="col col-sm-6">
-                  <select
-                    class="custom-select sm-1 form-control-sm"
-                    id="inlineFormCustomSelect"
-                  >
-                    <option selected>Currency</option>
-                    <option value="1"><%= currency %></option>
-                  </select>
+                    <div class="col-3">
+                      <div class="def-number-input number-input safari_only">
+                        <button
+                          id="decrease-btn"
+                          onclick="decreaseQuantity(this)"
+                          class="minus"
+                        ></button>
+                        <input
+                          id="quantity-input"
+                          class="quantity"
+                          min="0"
+                          name="quantity"
+                          value="1"
+                          type="number"
+                        />
+                        <button
+                          id="increase-btn"
+                          onclick="increaseQuantity(this)"
+                          class="plus"
+                        ></button>
+                      </div>
+                    </div>
+        
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
+
+
+    <div class="row justify-content-center"> 
+      <b><h5 id="error-message" class="text-danger"></h5></b>
+    </div>
+
   </div>
   <%- include('../partials/footer.ejs') %>
 </div>
@@ -103,12 +144,83 @@
 <%- include('../partials/bottom.ejs') %>
 
 <script>
+  function decreaseQuantity  (elementRef) {
+    const quantityEl = elementRef.parentNode.querySelector(".quantity");
+    let quantityValue = parseInt(quantityEl.getAttribute("value"));
+
+    if (quantityValue > 0) {
+      quantityValue -= 1;
+      quantityEl.setAttribute("value", quantityValue);
+    }
+  }
+
+  function increaseQuantity(elementRef) {
+    const quantityEl = elementRef.parentNode.querySelector(".quantity");
+    let quantityValue = parseInt(quantityEl.getAttribute("value"));
+    quantityValue += 1;
+    quantityEl.setAttribute("value", quantityValue);
+
+  }
+
+
+  let variationObj = {}
+  const productId = <%= productId %>
+  const quantityEl = document.getElementById('quantity-input')
+  let quantity = quantityEl.getAttribute('value')
+  
+
+  const errorMessageEl = document.getElementById('error-message')
+
   function addBorder(id, className) {
     var x = document.getElementsByClassName(className);
     for (i = 0; i < x.length; i++) {
       x.item(i).style.border = "none";
     }
     id.style.border = "2px solid black";
-    console.log(id.getAttribute("value"));
+    let variationKey = id.getAttribute("variation-id")
+    let variationValue = id.getAttribute("value")
+    variationObj[`${variationKey}`] = variationValue
+  }
+
+  async function addToCard() {
+    try {
+      const res = await fetch("/product/get-variation-id", {
+        method: "POST",
+        body: JSON.stringify({ variationObj, productId }),
+        headers: { "Content-Type": "application/json" },
+
+      });
+      const data = await res.json();
+      if(data.error){
+        errorMessageEl.textContent = data.error
+      }
+
+      if(data.variantId){
+          const variantId = data.variantId
+          const res = await fetch("/cart/add-item", {
+          method: "POST",
+          body: JSON.stringify({ productId, variantId, quantity }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const  responseData = await res.json();
+
+        if (responseData.error) {
+          if(responseData.error === 'Invalid Token'){
+            errorMessageEl.textContent = 'Please login to your account first.'
+          } else{
+            errorMessageEl.textContent = responseData.error
+          }
+        }
+        if(responseData.data){
+          console.log(responseData)
+        }
+
+
+      }
+    } catch (err) {
+      // fetch api never throws an error
+    }
+
   }
 </script>

@@ -29,49 +29,84 @@ const getCartObject = (productData, cartItems, cartItemIndex) => {
   return cartObject;
 };
 
-router.get("/", (req, res) => {
+
+const getCartTotalPrice = (cartObjects) => {
+
+  if(cartObjects === undefined ){
+    return 0
+  }
+
+  let total = 0
+  cartObjects.forEach(c => {
+    total += c.price * c.quantity
+  })
+
+  return total
+}
+
+router.get("/", async(req, res) => {
   const token = req.cookies.jwt;
   let cartObjects = [];
-  cartRequests.getCart(token, (cartError, cartData) => {
+  cartRequests.getCart(token, async (cartError, cartData) => {
     if (cartError) {
-      const errorToSend = {
-        error: cartError,
-      };
-      return res.status(400).json(errorToSend);
-    }
-    if (cartData.error==="There is no cart created for this user") {
-      return res.status(200).render("cart/cartPage", { cartObjects });
+      return res.status(400).render('error', {message: cartError})
+    }    
+
+    if(cartData.error)
+    {
+      if (cartData.error==="There is no cart created for this user") {
+        return res.status(200).render("cart/cartPage", { cartObjects });
+      }
+      else if(cartData.error === "Invalid Token"){
+        return res.status(200).render('error', {message: 'Not authenticated.'})
+      } else{
+        return res.status(400).render('error', {message: cartData.error})
+      }
+      
     }
 
     const cartItems = cartData.items;
+    let promises = []
 
-    let cartItemIndex = 0;
-
-    cartItems.forEach(async (item) => {
+    cartItems.forEach(async (item, cartItemIndex) => {
       let productId = item.productId;
-      await new Promise((resolve, reject) => {
-        productRequets.getProductById(productId, (productErr, productData) => {
-          if (productData.error) {
-            reject(productData.error);
-          } else {
-            let cartObject = getCartObject(
-              productData,
-              cartItems,
-              cartItemIndex
-            );
-            resolve(cartObject);
-          }
-        });
-      })
-        .catch((err) => {
-          res.status(400).json({error:err});
+      
+      promises.push(
+        new Promise((resolve, reject) => {
+          productRequets.getProductById(productId, (productErr, productData) => {
+            if (productData.error) {
+              reject(productData.error);
+            } else {
+              
+              let cartObject = getCartObject(
+                productData,
+                cartItems,
+                cartItemIndex
+              );
+              resolve(cartObject);
+            }
+          });
         })
-        .then((resolvedData) => {
-          cartObjects.push(resolvedData);
-        });
-      return res.status(200).render("cart/cartPage", { cartObjects });
+          .catch((err) => {
+            
+          })
+          .then((resolvedData) => {
+            cartObjects.push(resolvedData);
+          })
+
+      )
+        
     });
+    
+    await Promise.all(promises)
+
+    let cartTotalPrice = getCartTotalPrice(cartObjects)
+
+    return res.status(200).render("cart/cartPage", { cartObjects, cartTotalPrice});
   });
+
+
+
 });
 
 
@@ -110,4 +145,25 @@ router.delete('/remove-item', (req, res) => {
     })
 })
 
+
+router.post('/add-item', (req, res) => {
+  const token = req.cookies.jwt; 
+  const productId = req.body.productId
+  const variantId = req.body.variantId
+  const quantity = req.body.quantity
+
+  cartRequests.addItem(token, productId, variantId, quantity, (error, data) => {
+    if(error){
+      return res.status(500).json({error: error})
+    }
+    if(data){
+      if(data.error){
+        return res.status(400).json({error: data.error})
+      }
+    }
+
+    return res.status(200).json( {data: data} )
+  })
+  
+})
 module.exports = router;

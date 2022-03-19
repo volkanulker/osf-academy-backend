@@ -14,9 +14,12 @@
 <%- include('../partials/bottom.ejs') %>
 
 <script>
+
   async function decreaseQuantity  (elementRef) {
     const quantityEl = elementRef.parentNode.querySelector(".quantity");
     let quantityValue = parseInt(quantityEl.getAttribute("value"));
+
+    
     const parentClassEl = quantityEl.closest('.cart-card')
     const productId = parentClassEl.getAttribute('product-id')
     const variantId = parentClassEl.getAttribute('variant-id')
@@ -37,6 +40,7 @@
         if (data.error) {
           
         }
+        window.location.reload()
       } catch (err) {
         // fetch api never throws an error
       }
@@ -64,6 +68,7 @@
         if (data.error) {
           
         }
+        window.location.reload()
       } catch (err) {
         // fetch api never throws an error
       }
@@ -71,7 +76,13 @@
   }
 
   async function deleteItem(elementRef) {
-    
+    let numbOfItemEl = document.getElementById('numb-of-items')
+    let numbOfItemValue = parseInt(numbOfItemEl.textContent)
+
+    numbOfItemValue -= 1
+    numbOfItemEl.textContent = numbOfItemValue + ' items'
+
+
     const parentClassEl = elementRef.closest('.cart-card')
     const productId = parentClassEl.getAttribute('product-id')
     const messageEl = document.getElementById('info-message')
@@ -94,6 +105,7 @@
         }
 
         parentClassEl.remove();
+        window.location.reload()
       } catch (err) {
         // fetch api never throws an error
       }

@@ -1,7 +1,7 @@
 <h5><%= variationName %></h5>
 <div class="row mb-2">
     <% for(let i = 0; i< variationValuesArr.length; i++) { %>
-        <div class="<%= variationId %>-card variation card bg-light ml-3 mb-2" onclick="addBorder(this,'<%= variationId %>-card')" value="<%=variationValuesArr[i].name%>">
+        <div variation-id="<%= variationId %>" class="<%= variationId %>-card variation card bg-light ml-3 mb-2" onclick="addBorder(this,'<%= variationId %>-card')" value="<%=variationValuesArr[i].value%>" name="<%=variationValuesArr[i].name%>">
             <div class="card-body text-center">
             <p class="card-text"><%=variationValuesArr[i].name%></p>
             </div>
