@@ -69,18 +69,18 @@
           <%-include("./variationsCard.ejs", {variationName:
           variation.name,variationValuesArr:variation.values,
           variationId:variation.id }) %> <% }) %>
-
+     
           <div class="row mt-5">
             <div class="col-3">
-              <button class="btn btn-primary">
-                Buy Now <i class="fa-solid fa-credit-card"></i>
+              <button class="btn btn-danger add-btn">
+                Add to Wishlist <i class="fa-solid fa-credit-card"></i>
               </button>
             </div>
             <div class="col-3">
               <button
                 id="add-to-card"
                 onclick="addToCard()"
-                class="btn btn-warning"
+                class="btn btn-warning add-btn"
               >
                 Add to Cart <i class="fa-solid fa-cart-plus"></i>
               </button>
@@ -88,55 +88,30 @@
             <div class="col-6">
               <div class="row">
                 <div class="col-6 align-self-center">
-                  <p class="text-muted">
-                    <b>Price:</b> <%= price %> <%= currency %>
-                  </p>
+                  
+                <p class="text-muted">
+                  <b>Price:</b> <%= price %> <%= currency %>
+                </p>
                 </div>
-                <div class="col-6 align-self-center text-right">
-                  <div class="row">
-                    <div class="col-9">
-                      <p class="text-muted"><b>Quantity:</b></p>
-                    </div>
-
-                    <div class="col-3">
-                      <div class="def-number-input number-input safari_only">
-                        <button
-                          id="decrease-btn"
-                          onclick="decreaseQuantity(this)"
-                          class="minus"
-                        ></button>
-                        <input
-                          id="quantity-input"
-                          class="quantity"
-                          min="0"
-                          name="quantity"
-                          value="1"
-                          type="number"
-                        />
-                        <button
-                          id="increase-btn"
-                          onclick="increaseQuantity(this)"
-                          class="plus"
-                        ></button>
-                      </div>
-                    </div>
-        
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
+
+          <div class="mt-5">
+            <div class="row justify-content-center"> 
+              <b><h5 id="error-message" class="text-danger"></h5></b>
+              <b><h5 id="success-message" class="text-success"></h5></b>
+            </div>
+          </div>
+          
           
         </div>
       </div>
     </div>
 
 
-    <div class="row justify-content-center"> 
-      <b><h5 id="error-message" class="text-danger"></h5></b>
-      <b><h5 id="success-message" class="text-success"></h5></b>
-    </div>
+    
 
   </div>
   <%- include('../partials/footer.ejs') %>
@@ -145,28 +120,9 @@
 <%- include('../partials/bottom.ejs') %>
 
 <script>
-  function decreaseQuantity  (elementRef) {
-    const quantityEl = elementRef.parentNode.querySelector(".quantity");
-    let quantityValue = parseInt(quantityEl.getAttribute("value"));
-
-    if (quantityValue > 1) {
-      quantityValue -= 1;
-      quantityEl.setAttribute("value", quantityValue);
-    }
-  }
-
-  function increaseQuantity(elementRef) {
-    const quantityEl = elementRef.parentNode.querySelector(".quantity");
-    let quantityValue = parseInt(quantityEl.getAttribute("value"));
-    quantityValue += 1;
-    quantityEl.setAttribute("value", quantityValue);
-
-  }
-
-
+  
   let variationObj = {}
   const productId = <%= productId %>
-  const quantityEl = document.getElementById('quantity-input')
   const errorMessageEl = document.getElementById('error-message')
   const successMessageEl = document.getElementById('success-message')
 
@@ -199,8 +155,8 @@
       }
 
       if(data.variantId){
-          let quantity = quantityEl.getAttribute('value')
-          const variantId = data.variantId
+          const quantity = 1
+          const variantId = data.variantId  
           const res = await fetch("/cart/add-item", {
           method: "POST",
           body: JSON.stringify({ productId, variantId, quantity }),

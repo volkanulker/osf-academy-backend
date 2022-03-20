@@ -12,9 +12,11 @@
 }
 
 
-#quantity-inp {
-    width: 80px;
+.add-btn {
+  width: 120px;
+  height: 80px;
 }
+
 
 .number-input input[type="number"] {
     -webkit-appearance: textfield;
