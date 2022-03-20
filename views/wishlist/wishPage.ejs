@@ -1,0 +1,65 @@
+<%- include("../partials/headUpper.ejs",{title:'Alibazon - Wishlist'}) %>
+
+<link rel="stylesheet" href="/stylesheets/wishlist.css" />
+
+
+<%- include("../partials/headBottom.ejs") %>
+
+<div class="container">
+  <%- include("../partials/nav.ejs") %>
+
+  <%- include("./upperBanner.ejs") %>
+
+
+  <div class="container h-100">
+
+    <div class="row h-100 justify-content-center align-items-center">
+        <%- include("./wishCard.ejs") %>
+    </div>
+
+  </div>
+
+  <%-include("../partials/footer.ejs") %>
+</div>
+
+<%- include('../partials/bottom.ejs') %>
+
+<script>
+
+  async function deleteItem(elementRef) {
+    let numbOfItemEl = document.getElementById('numb-of-items')
+    let numbOfItemValue = parseInt(numbOfItemEl.textContent)
+
+    numbOfItemValue -= 1
+    numbOfItemEl.textContent = numbOfItemValue + ' items'
+
+
+    const parentClassEl = elementRef.closest('.cart-card')
+    const productId = parentClassEl.getAttribute('product-id')
+    const messageEl = document.getElementById('info-message')
+    const variantId = parentClassEl.getAttribute('variant-id')
+
+    messageEl.textContent = ''
+    
+    try {
+        const res = await fetch("/cart/remove-item", {
+          method: "DELETE",
+          body: JSON.stringify({ productId, variantId }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        
+        if (data) {
+          if(data.error){
+              messageEl.textContent = data.error
+          }
+        }
+
+        parentClassEl.remove();
+        window.location.reload()
+      } catch (err) {
+        messageEl.textContent = error
+      }
+    
+  }
+</script>

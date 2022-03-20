@@ -11,7 +11,7 @@ const categoryRouter = require('./routes/category')
 const authRouter = require('./routes/auth')
 const searchRouter = require('./routes/search')
 const cartRouter = require('./routes/cart')
-const cartRequests = require('./requests/cart')
+const wishlistRouter = require('./routes/wishlist')
 
 const app = express();
 
@@ -41,24 +41,9 @@ app.use('/product',productRouter)
 
 
 app.use('/cart', cartRouter)
-let productId = "86736845"
-let variantId = "883360544250"
-let quantity = "2"
 
-// cartRequests.addItem(productId, variantId, quantity, (error, data) => {
-//   console.log(data)
-// })
-// cartRequests.removeItem(productId, variantId,(error,data) => {
-//   console.log(data)
-// })
+app.use('/wishlist', wishlistRouter)
 
-// cartRequests.changeItemQuantity(productId,variantId,4, (error,data) => {
-//   console.log(data)
-// })
-
-// cartRequests.getCart((error, data) => {
-//   console.log(data)
-// })
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
