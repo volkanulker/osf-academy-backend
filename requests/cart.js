@@ -9,9 +9,6 @@ const secretKey =
 const errMessage = "Unable to connect to the Backend Service!";
 
 
-// const token  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmM3YzdiOWQ3MjYwMDAyNDYyNGFmMiIsImlhdCI6MTY0NzYwNjUwOCwiZXhwIjoxNjQ3NjkyOTA4fQ.VnwD5xqCrvgQ8R5MVnSMRQBO2ia9-jgxHVO-exUkqGY'
-
-
 module.exports.getCart = (token, callback) =>{
     const url = urlBase + `?secretKey=${secretKey}`;
    

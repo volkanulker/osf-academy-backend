@@ -72,7 +72,7 @@
      
           <div class="row mt-5">
             <div class="col-3">
-              <button class="btn btn-danger add-btn">
+              <button class="btn btn-danger add-btn" onclick="addToWishlist()">
                 <i class="fa-solid fa-heart fa-2x"></i></i>
               </button>
             </div>
@@ -141,7 +141,6 @@
   async function addToCard() {
     errorMessageEl.textContent = ''
     successMessageEl.textContent = ''
-    console.log(variationObj)
     try {
       const res = await fetch("/product/get-variation-id", {
         method: "POST",
@@ -174,6 +173,54 @@
         }
         if(responseData.data){
           successMessageEl.textContent = 'Product is added to the cart!'
+        }
+
+        window.location.reload()
+
+
+      }
+    } catch (err) {
+      errorMessageEl.textContent = err
+    }
+
+  }
+
+
+  async function addToWishlist() {
+    errorMessageEl.textContent = ''
+    successMessageEl.textContent = ''
+    try {
+      const res = await fetch("/product/get-variation-id", {
+        method: "POST",
+        body: JSON.stringify({ variationObj, productId }),
+        headers: { "Content-Type": "application/json" },
+
+      });
+      const data = await res.json();
+      if(data.error){
+        errorMessageEl.textContent = data.error
+      }
+
+      if(data.variantId){
+          const quantity = 1
+          const variantId = data.variantId  
+          const res = await fetch("/wishlist/add-item", {
+          method: "POST",
+          body: JSON.stringify({ productId, variantId, quantity }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const  responseData = await res.json();
+
+        if (responseData.error) {
+          if(responseData.error === 'Invalid Token'){
+            errorMessageEl.textContent = 'Please login to your account first.'
+          } else{
+            errorMessageEl.textContent = responseData.error
+          }
+        }
+        if(responseData.data){
+          successMessageEl.textContent = 'Product is added to the wishlist!'
         }
 
         window.location.reload()
