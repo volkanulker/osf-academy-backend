@@ -98,7 +98,9 @@ router.post('/get-variation-id', (req, res) => {
     if(data.error){
       return res.status(400).json({error:data.error})
     }
+
     const variants = data[0].variants
+    console.log(variants)
     variants.forEach(variant => {
       let variationValues = variant.variation_values
       if( _.isEqual(variationValues,variationObj) ){

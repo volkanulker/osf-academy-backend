@@ -135,6 +135,7 @@
 
     <div class="row justify-content-center"> 
       <b><h5 id="error-message" class="text-danger"></h5></b>
+      <b><h5 id="success-message" class="text-success"></h5></b>
     </div>
 
   </div>
@@ -148,7 +149,7 @@
     const quantityEl = elementRef.parentNode.querySelector(".quantity");
     let quantityValue = parseInt(quantityEl.getAttribute("value"));
 
-    if (quantityValue > 0) {
+    if (quantityValue > 1) {
       quantityValue -= 1;
       quantityEl.setAttribute("value", quantityValue);
     }
@@ -166,10 +167,8 @@
   let variationObj = {}
   const productId = <%= productId %>
   const quantityEl = document.getElementById('quantity-input')
-  let quantity = quantityEl.getAttribute('value')
-  
-
   const errorMessageEl = document.getElementById('error-message')
+  const successMessageEl = document.getElementById('success-message')
 
   function addBorder(id, className) {
     var x = document.getElementsByClassName(className);
@@ -179,10 +178,14 @@
     id.style.border = "2px solid black";
     let variationKey = id.getAttribute("variation-id")
     let variationValue = id.getAttribute("value")
+    let variationName = id.getAttribute('name')
     variationObj[`${variationKey}`] = variationValue
   }
 
   async function addToCard() {
+    errorMessageEl.textContent = ''
+    successMessageEl.textContent = ''
+    console.log(variationObj)
     try {
       const res = await fetch("/product/get-variation-id", {
         method: "POST",
@@ -196,6 +199,7 @@
       }
 
       if(data.variantId){
+          let quantity = quantityEl.getAttribute('value')
           const variantId = data.variantId
           const res = await fetch("/cart/add-item", {
           method: "POST",
@@ -213,13 +217,15 @@
           }
         }
         if(responseData.data){
-          console.log(responseData)
+          successMessageEl.textContent = 'Product is added to the cart!'
         }
+
+        window.location.reload()
 
 
       }
     } catch (err) {
-      // fetch api never throws an error
+      errorMessageEl.textContent = err
     }
 
   }

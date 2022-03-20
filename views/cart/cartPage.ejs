@@ -24,7 +24,7 @@
     const productId = parentClassEl.getAttribute('product-id')
     const variantId = parentClassEl.getAttribute('variant-id')
 
-    if (quantityValue > 0) {
+    if (quantityValue > 1) {
       quantityValue -= 1;
       quantityEl.setAttribute("value", quantityValue);
       console.log(quantityEl.getAttribute("value"))
@@ -36,13 +36,12 @@
           headers: { "Content-Type": "application/json" },
         });
         const data = await res.json();
-        console.log(data)
         if (data.error) {
           
         }
         window.location.reload()
       } catch (err) {
-        // fetch api never throws an error
+        messageEl.textContent = err
       }
     }
   }
@@ -64,13 +63,12 @@
           headers: { "Content-Type": "application/json" },
         });
         const data = await res.json();
-        console.log(data)
         if (data.error) {
           
         }
         window.location.reload()
       } catch (err) {
-        // fetch api never throws an error
+        messageEl.textContent = err
       }
 
   }
@@ -97,7 +95,7 @@
           headers: { "Content-Type": "application/json" },
         });
         const data = await res.json();
-        console.log(data)
+        
         if (data) {
           if(data.error){
               messageEl.textContent = data.error
@@ -107,7 +105,7 @@
         parentClassEl.remove();
         window.location.reload()
       } catch (err) {
-        // fetch api never throws an error
+        messageEl.textContent = error
       }
     
   }

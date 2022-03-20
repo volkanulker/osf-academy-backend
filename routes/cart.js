@@ -3,11 +3,34 @@ const router = express.Router();
 const cartRequests = require("../requests/cart.js");
 const productRequets = require("../requests/product");
 
+/*
+*  Function to return name of a given product's variation value
+*/
+const getNameOfVariant = (cartItem, productObj) => {
+  const keys = Object.keys(cartItem.variant.variation_values)
+  const variationAttributes = productObj.variation_attributes
+  let variationObjWithNames = {}
+  variationAttributes.forEach( attr => {
+    keys.forEach(key => {
+      if(attr.id === key){
+        attr.values.forEach(valueObj => {
+          if(cartItem.variant.variation_values[key] === valueObj.value){
+            variationObjWithNames[key] = valueObj.name
+          }
+        })
+
+      }
+    })
+    
+  })
+  return variationObjWithNames
+}
+
 const getCartObject = (productData, cartItems, cartItemIndex) => {
   const name = productData[0].name;
   const description = productData[0].short_description;
   const price = productData[0].price;
-  const variationValues = cartItems[cartItemIndex].variant.variation_values;
+  const variationValues = getNameOfVariant(cartItems[cartItemIndex], productData[0])
   const variantId = cartItems[cartItemIndex].variant.product_id
   const productId = productData[0].id
   const quantity = cartItems[cartItemIndex].quantity;
@@ -101,12 +124,9 @@ router.get("/", async(req, res) => {
     await Promise.all(promises)
 
     let cartTotalPrice = getCartTotalPrice(cartObjects)
-
     return res.status(200).render("cart/cartPage", { cartObjects, cartTotalPrice});
   });
-
-
-
+  
 });
 
 
