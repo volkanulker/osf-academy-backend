@@ -41,6 +41,7 @@ module.exports.parentCategorySelection_get = (req, res, next) => {
         const url = req.url
         const paths = breadcrumbUtils.getBreadcrumbPaths(url)
         const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(paths,'/category')
+        console.log(breadcrumbObjects)
         return res.render("category/subCategorySelection", {
           subCategories: data,
           gender: gender,

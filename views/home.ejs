@@ -5,43 +5,38 @@
 <%- include("./partials/headBottom.ejs") %>
 
 <div class="container">
-  <%- include("./partials/nav.ejs") %> 
-
-  <%- include("./partials/breadcrumb.ejs", {breadcrumbObjects})%>
-
+  <%- include("./partials/nav.ejs") %> <%- include("./partials/breadcrumb.ejs",
+  {breadcrumbObjects})%>
 
   <div class="row mt-5">
-
-    
     <div class="col-6">
-
       <a href="category/mens">
-      <div class="card bg-dark text-white">
-        <img class="card-img" src="images/index/mens.jpg" alt="Card image" />
-        <div class="card-img-overlay">
-          <h5 class="card-title">Men</h5>
+        <div class="card bg-dark text-white">
+          <img class="card-img" src="images/index/mens.jpg" alt="Card image" />
+          <div class="card-img-overlay">
+            <h5 class="card-title">Men</h5>
+          </div>
         </div>
-      </div>
-    </a>
-
+      </a>
     </div>
 
     <div class="col-6">
-
       <a href="category/womens">
         <div class="card bg-dark text-white">
-          <img class="card-img" src="images/index/womens.jpg" alt="Card image" />
+          <img
+            class="card-img"
+            src="images/index/womens.jpg"
+            alt="Card image"
+          />
           <div class="card-img-overlay">
             <h5 class="card-title">Women</h5>
           </div>
         </div>
-      </div>
       </a>
-      
+    </div>
+
+    <%-include("./partials/footer.ejs") %>
   </div>
 
-
-  <%-include("./partials/footer.ejs") %>
+  <%- include('./partials/bottom.ejs') %>
 </div>
-
-<%- include('./partials/bottom.ejs') %>

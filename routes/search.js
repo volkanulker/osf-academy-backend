@@ -26,7 +26,6 @@ const filterProductsByName = (productName) => {
 
 router.post('/', (req, res) => {
     const productName = req.body.productName
-    //productName.toLowerCase()
     getAllProducts((error, data) => {
         if(error){
             return res.json({data:[]})

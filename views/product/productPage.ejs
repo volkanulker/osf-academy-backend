@@ -4,50 +4,37 @@
 
 <div class="container">
   <%- include('../partials/nav.ejs') %>
-  <%-include('../partials/breadcrumb.ejs')%> <% if(productsOnLeft.length === 0
-  && productsOnRight.length === 0) { %>
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <h1 class="display-4">Sorry</h1>
-      <hr />
-      <br />
-      <p class="lead">No product found on that page.</p>
-    </div>
-  </div>
-  <% } else { %>
-
-  <div class="row">
-    <div class="col sm-6">
-      <% productsOnLeft.forEach( product => { %> <%-
-      include('./productCard.ejs', {product:product}) %> <% }) %>
+  <%-include('../partials/breadcrumb.ejs')%> 
+  <% if(productsOnLeft.length === 0  && productsOnRight.length === 0) { %>
+    <!-- Render a error message if not product found -->
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Sorry</h1>
+        <hr />
+        <br />
+        <p class="lead">No product found on that page.</p>
+      </div>
     </div>
 
-    <div class="col sm-6">
-      <% productsOnRight.forEach( product => { %> <%-
-      include('./productCard.ejs', {product:product}) %> <% }) %>
-    </div>
-  </div>
-  <div class="container h-100">
-    <div class="row h-100 justify-content-center">
-      <ul class="pagination">
-        <% if(isTherePrevPage) { %>
-          <li class="page-item">
-            <a id="page-prev" class="page-link" href="<%= breadcrumbObjects[0].href%>/page-<%= currentPage - 1 %>">Previous</a>
-          </li>
-        <% } %>
-        <li class="page-item">
-          <a class="page-link" href=""><%= currentPage %></a>
-        </li>
-        <% if(isThereNextPage) { %>
-        <li class="page-item">
-          <a id="page-next" class="page-link" href="<%= breadcrumbObjects[0].href%>/page-<%= parseInt(currentPage) + 1 %>">Next</a>
-        </li>
-        <% } %>
-      </ul>
-    </div>
-  </div>
+    <% } else { %> 
+    <!-- Otherwise print products  -->
+    <div class="row">
+      <div class="col sm-6">
+        <% productsOnLeft.forEach( product => { %> <%-
+        include('./productCard.ejs', {product:product}) %> <% }) %>
+      </div>
 
-  <% } %> <%- include('../partials/footer.ejs') %>
+      <div class="col sm-6">
+        <% productsOnRight.forEach( product => { %> <%-
+        include('./productCard.ejs', {product:product}) %> <% }) %>
+      </div>
+    </div>
+  
+  <%- include('../paginator/paginator.ejs') %>
+
+  <% } %> 
+  
+  <%- include('../partials/footer.ejs') %>
 </div>
 
 <%- include('../partials/bottom.ejs') %>

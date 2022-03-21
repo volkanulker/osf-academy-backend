@@ -1,0 +1,19 @@
+<div class="container h-100">
+    <div class="row h-100 justify-content-center">
+      <ul class="pagination">
+        <% if( paginationObj.isTherePrevPage ) { %>
+          <li class="page-item">
+            <a id="page-prev" class="page-link" href="<%= paginationObj.prevPageHref %>">Previous</a>
+          </li>
+        <% } %>
+        <li class="page-item">
+          <a class="page-link" href=""><%= paginationObj.pageNo %></a>
+        </li>
+        <% if( paginationObj.isThereNextPage ) { %>
+        <li class="page-item">
+          <a id="page-next" class="page-link" href="<%= paginationObj.nextPageHref %>">Next</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
