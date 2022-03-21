@@ -67,8 +67,8 @@ module.exports.getAllProducts =  async (callback) => {
 
 
 
-module.exports.getProductByCategoryId = (id, callback) => {
-    const url =`${urlBase}?primary_category_id=${id}&secretKey=${secretKey}`
+module.exports.getProductByCategoryId = (id,pageNo, callback) => {
+    const url =`${urlBase}?primary_category_id=${id}&page=${pageNo}&secretKey=${secretKey}`
 
     request({url:url, json:true}, (error, response) => {
         if(error){

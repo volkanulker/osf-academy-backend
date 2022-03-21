@@ -15,28 +15,47 @@ const getBreadcrumbNavs = (url, name) => {
 
 module.exports.productPage_get = (req, res, next) => {
     const subCategory = req.params.subCategory;
+    const pageNo = req.params.page
   
-    productRequest.getProductByCategoryId(subCategory, (error, data) => {
+    productRequest.getProductByCategoryId(subCategory, pageNo, (error, data) => {
       if (error) {
         return res.render("error", { message: "An error occured" });
       }
-  
+
+      const url = req.url;
+      const paths = breadcrumbUtils.getBreadcrumbPaths(url);
+      
+      const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(
+        paths,
+        "/product"
+      );
+
+      
+
       if (data.error) {
-        return res.render("error", { message: data.error });
+        return res.render("./product/productPage", {
+          productsOnLeft:[],
+          productsOnRight:[],
+          breadcrumbObjects:[],
+          curentPage: -1,
+          numbOfProduct:0
+        });
+        //return res.render("error", { message: data.error });
       } else {
         let halfwayThrough = Math.ceil(data.length / 2);
         const productsOnLeft = data.slice(0, halfwayThrough);
         const productsOnRight = data.slice(halfwayThrough, data.length);
-        const url = req.url;
-        const paths = breadcrumbUtils.getBreadcrumbPaths(url);
-        const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(
-          paths,
-          "/product"
-        );
+        const numbOfProduct = data.length
+        const isThereNextPage = numbOfProduct < 25 ? false: true
+        const isTherePrevPage = pageNo > 1 ? true : false
+        console.log(breadcrumbObjects)
         return res.render("./product/productPage", {
           productsOnLeft,
           productsOnRight,
           breadcrumbObjects,
+          currentPage: pageNo,
+          isThereNextPage,
+          isTherePrevPage
         });
       }
     });

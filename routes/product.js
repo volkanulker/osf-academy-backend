@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const productController = require('../controllers/productController')
 
-router.get("/:subCategory", productController.productPage_get);
+router.get("/:subCategory/page-:page", productController.productPage_get);
 
 
 
