@@ -1,7 +1,16 @@
 const productRequest = require("../requests/product");
 const breadcrumbUtils = require("../utils/breadcrumbUtils");
 const _ = require("lodash");
+const Sentry = require("@sentry/node");
 
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    attachStacktrace: true,
+});
+
+
+const apiErrorMessage = "An API service error is occured.";
 /*
  * Method to pop product id from pop
  * and push product name for understandable breadcrumb navs
@@ -53,7 +62,8 @@ module.exports.productPage_get = (req, res, next) => {
         pageNo,
         (error, data) => {
             if (error) {
-                return res.render("error", { message: "An error occured" });
+                Sentry.captureException(error)
+                return res.status(500).render("error", { message: apiErrorMessage });
             }
 
             const url = req.url;
@@ -98,7 +108,8 @@ module.exports.productDetail_get = (req, res, next) => {
     const productId = req.params.productId;
     productRequest.getProductById(productId, (error, data) => {
         if (error) {
-            return res.render("error", { message: "An error occured" });
+            Sentry.captureException(error)
+            return res.status(500).render("error", { message: apiErrorMessage });
         }
         if (data.error) {
             return res.render("error", { message: data.error });
@@ -140,7 +151,8 @@ module.exports.getVariationId = (req, res) => {
     
     productRequest.getProductById(productId, (error, data) => {
         if (error) {
-            return res.status(500).json({ error: error });
+            Sentry.captureException(error)
+            return res.status(500).json({ error: apiErrorMessage });
         }
         if (data.error) {
             return res.status(400).json({ error: data.error });

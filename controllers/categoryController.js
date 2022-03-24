@@ -1,13 +1,22 @@
 const categoryRequest = require("../requests/category");
 const breadcrumbUtils = require('../utils/breadcrumbUtils')
+const Sentry = require("@sentry/node");
 
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    attachStacktrace: true,
+});
+
+const apiErrorMessage = "An API service error is occured."
 
 module.exports.parentCategorySelection_get = (req, res, next) => {
     const gender = req.params.gender;
     if (gender === "mens" || gender === "womens") {
       categoryRequest.getAllParentCategories(gender, (error, data) => {
         if (error) {
-          return res.status(500).render("error", { message: "An error occured." });
+          Sentry.captureException(error)
+          return res.status(500).render("error", { message: apiErrorMessage });
         }
         const url = req.url
         const paths = breadcrumbUtils.getBreadcrumbPaths(url)
@@ -36,7 +45,8 @@ module.exports.parentCategorySelection_get = (req, res, next) => {
           return res.status(404).render("error", { message: "Category Not Found" });
         }
         if (error) {
-          return res.status(500).render("error", { message: "An error occured." });
+          Sentry.captureException(error)
+          return res.status(500).render("error", { message: apiErrorMessage });
         }
         const url = req.url
         const paths = breadcrumbUtils.getBreadcrumbPaths(url)

@@ -1,62 +1,80 @@
-const authRequest = require('../requests/auth')
+const authRequest = require("../requests/auth");
+const Sentry = require("@sentry/node");
+
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    attachStacktrace: true,
+});
 
 module.exports.signin_index = (req, res) => {
-    res.status(200).render('auth/signin')
-}
+    res.status(200).render("auth/signin");
+};
 
 module.exports.signup_index = (req, res) => {
-    res.status(200).render('auth/signup')
-}
+    res.status(200).render("auth/signup");
+};
 
 module.exports.signin_post = async (req, res) => {
-    const {email, password} = req.body
+    const { email, password } = req.body;
 
-    authRequest.signin(email, password, (error,data) => {
-
-        if(error){ return res.status(500).json({error:error}) }
-
-        if(data.error){ return res.status(400).json( data ) }
-
-        if(data.user){
-            const { token } = data
-            const { user } = data
-            res.cookie('jwt', token, { httpOnly:true })
-            res.cookie('email', user.email, { httpOnly:true })
-            return res.status(200).json( { user: user._id, token:token })
+    authRequest.signin(email, password, (error, data) => {
+        if (error) {
+            Sentry.captureException(error)
+            return res.status(500).json({ error: error });
         }
 
-        return res.status(500).json( {error:'An error is occured please try again later'} )
-        
-    })
+        if (data.error) {
+            return res.status(400).json(data);
+        }
 
-}
+        if (data.user) {
+            const { token } = data;
+            const { user } = data;
+            res.cookie("jwt", token, { httpOnly: true });
+            res.cookie("email", user.email, { httpOnly: true });
+            return res.status(200).json({ user: user._id, token: token });
+        }
+        Sentry.captureException(
+            new Error("An internal error in signin post controller.")
+        );
+        return res
+            .status(500)
+            .json({ error: "An error is occured please try again later" });
+    });
+};
 
 module.exports.signup_post = (req, res) => {
-    const { name, email, password } = req.body
+    const { name, email, password } = req.body;
 
-    authRequest.signup( name, email, password, (error, data) => {
-        if(error){ return res.status(500).json( {error: error} ) }
-
-        if(data.error){ return res.status(400).json( data ) }
-
-        if(data.user){
-            const { token } = data
-            const { user } = data
-            res.cookie('jwt', token, { httpOnly:true })
-            res.cookie('email', user.email, { httpOnly:true })
-            return res.status(201).json( { user: user._id })
+    authRequest.signup(name, email, password, (error, data) => {
+        if (error) {
+            return res.status(500).json({ error: error });
         }
-        
-        
-        return res.status(500).json( {error: 'An error is occured please try again later'} )
 
-    })
+        if (data.error) {
+            return res.status(400).json(data);
+        }
 
-}
+        if (data.user) {
+            const { token } = data;
+            const { user } = data;
+            res.cookie("jwt", token, { httpOnly: true });
+            res.cookie("email", user.email, { httpOnly: true });
+            return res.status(201).json({ user: user._id });
+        }
+
+        Sentry.captureException(
+            new Error("An internal error in sign up post controller.")
+        );
+        return res
+            .status(500)
+            .json({ error: "An error is occured please try again later" });
+    });
+};
 
 module.exports.logout = (req, res) => {
-    res.cookie('jwt', '', { maxAge:1 })
-    res.cookie('email', '', { maxAge:1 })
-    res.status(200).redirect('/')
-}
-
+    res.cookie("jwt", "", { maxAge: 1 });
+    res.cookie("email", "", { maxAge: 1 });
+    res.status(200).redirect("/");
+};

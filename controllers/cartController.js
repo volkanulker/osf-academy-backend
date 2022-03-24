@@ -1,6 +1,14 @@
 const cartRequests = require("../requests/cart.js");
 const productRequets = require("../requests/product");
+const Sentry = require("@sentry/node");
 
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    attachStacktrace: true,
+});
+
+const apiErrorMessage = "An API service error is occured.";
 /*
  *  Function to return name of a given product's variation value
  */
@@ -72,7 +80,9 @@ module.exports.cart_index = async (req, res) => {
     let cartObjects = [];
     cartRequests.getCart(token, async (cartError, cartData) => {
         if (cartError) {
-            return res.status(400).render("error", { message: cartError });
+            return res
+                .status(500)
+                .render("error", { message: apiErrorMessage });
         }
 
         if (cartData.error) {
@@ -113,7 +123,9 @@ module.exports.cart_index = async (req, res) => {
                         }
                     );
                 })
-                    .catch((err) => {})
+                    .catch((err) => {
+                        Sentry.captureException(err);
+                    })
                     .then((resolvedData) => {
                         cartObjects.push(resolvedData);
                     })
@@ -141,10 +153,10 @@ module.exports.changeQuantity = (req, res) => {
         newQuantity,
         (error, data) => {
             if (error) {
-                return res.status(400).json({ error: "API service error" });
+                Sentry.captureException(error);
+                return res.status(500).json({ error: apiErrorMessage });
             }
             if (data.error) {
-                console.log(data.error);
                 return res.status(400).json({ error: data.error });
             }
 
@@ -159,11 +171,11 @@ module.exports.removeItem = (req, res) => {
     const variantId = req.body.variantId;
     cartRequests.removeItem(token, productId, variantId, (error, data) => {
         if (error) {
-            return res.status(400).json({ error: "API service error" });
+            Sentry.captureException(error);
+            return res.status(500).json({ error: apiErrorMessage });
         }
         if (data) {
             if (data.error) {
-                console.log(data.error);
                 return res.status(400).json({ error: data.error });
             }
         }
@@ -184,15 +196,14 @@ module.exports.addItem = (req, res) => {
         quantity,
         (error, data) => {
             if (error) {
-                return res.status(500).json({ error: error });
+                Sentry.captureException(error);
+                return res.status(500).json({ error: apiErrorMessage });
             }
             if (data) {
                 if (data.error) {
-                    console.log(data.error);
                     return res.status(400).json({ error: data.error });
                 }
             }
-            console.log("test");
             return res.status(200).json({ data: data });
         }
     );
