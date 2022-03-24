@@ -1,11 +1,11 @@
 
 
 module.exports.index_get = (req, res, next) => {
-    res.redirect('/home')
+    res.status(302).redirect('/home')
 }
 
 
 module.exports.home_get = (req, res, next) => {
       
-    res.render('home', {breadcrumbObjects:null})
+    res.status(200).render('home', {breadcrumbObjects:null})
 }

@@ -4,14 +4,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { checkUser } = require('./middleware/authMiddleware')
-const querystring = require('querystring')
-const indexRouter = require('./routes/index');
-const productRouter = require('./routes/product')
-const categoryRouter = require('./routes/category')
-const authRouter = require('./routes/auth')
-const searchRouter = require('./routes/search')
-const cartRouter = require('./routes/cart')
-const wishlistRouter = require('./routes/wishlist')
+const indexRouter = require('./routes/indexRoutes');
+const productRouter = require('./routes/productRoutes')
+const categoryRouter = require('./routes/categoryRoutes')
+const authRouter = require('./routes/authRoutes')
+const searchRouter = require('./routes/searchRoutes')
+const cartRouter = require('./routes/cartRoutes')
+const wishlistRouter = require('./routes/wishlistRoutes')
 
 const app = express();
 
@@ -57,7 +56,7 @@ app.use(function(err, req, res, next) {
 
   // render 404 not found page
   if(err.status === 404){
-    return res.render('404')
+    return res.status(404).render('404')
   }
   // render the error page
   res.status(err.status || 500);
