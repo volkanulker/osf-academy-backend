@@ -2,15 +2,31 @@
 
 <link rel="stylesheet" href="/stylesheets/cart.css" />
 
-
 <%- include("../partials/headBottom.ejs") %>
 
 <div class="container">
-  <%- include("../partials/nav.ejs") %> 
-  <%- include("./cartCard.ejs") %>
-  <%-include("../partials/footer.ejs") %>
+    <%- include("../partials/nav.ejs") %>
+    <%- include("./cartCard.ejs") %>
+
+
+    <div class="mt-5">
+      <div class="row justify-content-center"> 
+        <b><h5 id="error-message" class="text-danger"></h5></b>
+      </div>
+    </div>
+
+    <%-include("../partials/footer.ejs") %>
+
+    
+
 </div>
 
 <%- include('../partials/bottom.ejs') %>
 
+<script>
+    let cartObjects = <%- JSON.stringify(cartObjects) %>
+</script>
+
 <script src="/javascripts/cartPageScript.js"></script>
+
+<script src="/javascripts/paymentScript.js"></script>

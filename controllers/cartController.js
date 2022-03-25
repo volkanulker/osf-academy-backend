@@ -42,21 +42,23 @@ const getCartObject = (productData, cartItems, cartItemIndex) => {
         productData[0]
     );
     const variantId = cartItems[cartItemIndex].variant.product_id;
+    const variantPrice = cartItems[cartItemIndex].variant.price;
     const productId = productData[0].id;
     const quantity = cartItems[cartItemIndex].quantity;
     const image = productData[0].image_groups[0].images[0];
     const productHref = `product/${productData[0].primary_category_id}/${productId}`;
 
     let cartObject = {
-        name: name,
-        description: description,
-        price: price,
-        variationValues: variationValues,
-        quantity: quantity,
-        image: image,
-        variantId: variantId,
-        productId: productId,
-        productHref: productHref,
+        name,
+        description,
+        price,
+        variationValues,
+        quantity,
+        image,
+        variantId,
+        productId,
+        productHref,
+        variantPrice
     };
 
     return cartObject;
@@ -135,6 +137,7 @@ module.exports.cart_index = async (req, res) => {
         await Promise.all(promises);
 
         let cartTotalPrice = getCartTotalPrice(cartObjects);
+        
         return res
             .status(200)
             .render("cart/cartPage", { cartObjects, cartTotalPrice });

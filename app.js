@@ -11,7 +11,7 @@ const authRouter = require("./routes/authRoutes");
 const searchRouter = require("./routes/searchRoutes");
 const cartRouter = require("./routes/cartRoutes");
 const wishlistRouter = require("./routes/wishlistRoutes");
-
+const paymentRouter = require("./routes/paymentRoutes")
 const app = express();
 
 // view engine setup
@@ -40,6 +40,8 @@ app.use("/product", productRouter);
 app.use("/cart", cartRouter);
 
 app.use("/wishlist", wishlistRouter);
+
+app.use("/payment", paymentRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
