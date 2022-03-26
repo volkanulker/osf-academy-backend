@@ -4,50 +4,121 @@
 <%- include("../partials/headBottom.ejs") %>
 
 <div class="container">
-  <%- include("../partials/nav.ejs") %> 
-  <%- include("./searchbar.ejs") %>
-  <div class="row justify-content-center">
-    <div id="searchResults"></div>
-    <div><p class="text-danger" id="message"></p></div>
-  </div>
+    <%- include("../partials/nav.ejs") %> <%- include("./searchbar.ejs") %> <%-
+    include('./spinner.ejs') %>
 
-  <%-include("../partials/footer.ejs") %>
+    <div class="row justify-content-center">
+        <div id="searchResults"></div>
+        <div><p class="text-danger" id="message"></p></div>
+    </div>
+
+    <%-include("../partials/footer.ejs") %>
 </div>
 
 <%- include('../partials/bottom.ejs') %>
 
 <script>
-  const form = document.querySelector("form");
+    async function addToCart(elementRef) {
+        const resultCardEl = elementRef.closest(".result-card");
+        const productId = resultCardEl.getAttribute("product-id");
+        const variantId = resultCardEl.getAttribute("variant-id");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    // get values
-    const searchResultsEl = document.getElementById("searchResults");
-    const productName = form.productname.value;
-    const messageEl = document.getElementById("message");
-    messageEl.textContent = "";
-    searchResultsEl.innerHTML = "";
-    // check product name with regex
-    let match = productName.match(/^[a-zA-Z]*/);
-    let match2 = productName.match(/\s*/)
-    if(match2[0] === productName){
-      messageEl.textContent = "No product found by this name"
-      return;
+        try {
+            const quantity = 1;
+            const res = await fetch("/cart/add-item", {
+                method: "POST",
+                body: JSON.stringify({ productId, variantId, quantity }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const responseData = await res.json();
+
+            if (responseData.error) {
+                if (responseData.error === "Invalid Token") {
+                    alert("Please login to your account first.");
+                } else {
+                    alert(responseData.error);
+                }
+            }
+            if (responseData.data) {
+                alert("Product is added to the cart!");
+            }
+        } catch (err) {
+            alert("An error occured when adding item to the cart");
+        }
     }
-    if (match[0] === productName) {
-      try {
-        const res = await fetch("/search", {
-          method: "POST",
-          body: JSON.stringify({ productName }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const payload = await res.json();
-        if (payload.data.length === 0) {
-          messageEl.textContent = "No product found by this name";
-        } else {
-          // Make simple after fixing ejs bug
-          payload.data.forEach((product) => {
-            let productCard = `<div class="card mb-3 mt-3" style="max-width: 540px">
+
+    async function addToWishlist(elementRef) {
+        const resultCardEl = elementRef.closest(".result-card");
+        const productId = resultCardEl.getAttribute("product-id");
+        const variantId = resultCardEl.getAttribute("variant-id");
+
+        try {
+            const quantity = 1;
+            const res = await fetch("/wishlist/add-item", {
+                method: "POST",
+                body: JSON.stringify({ productId, variantId, quantity }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const responseData = await res.json();
+
+            if (responseData.error) {
+                if (responseData.error === "Invalid Token") {
+                    alert("Please login to your account first.");
+                } else {
+                    alert(responseData.error);
+                }
+            }
+            if (responseData.data) {
+                alert("Product is added to the wishlist!");
+            }
+        } catch (err) {
+            alert("An error occured please try again later.");
+        }
+    }
+</script>
+
+<script>
+    const form = document.querySelector("form");
+    const spinnerEl = document.getElementById("spinner");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        // get values
+        const searchResultsEl = document.getElementById("searchResults");
+        const productName = form.productname.value;
+        const messageEl = document.getElementById("message");
+        messageEl.textContent = "";
+        searchResultsEl.innerHTML = "";
+        // check product name with regex
+        let match = productName.match(/^[a-zA-Z]*/);
+        let match2 = productName.match(/\s*/);
+        if (match2[0] === productName) {
+            messageEl.textContent = "No product found by this name";
+            return;
+        }
+        if (match[0] === productName) {
+            try {
+                // show spinner div
+                spinnerEl.classList.add("busy");
+                // wait for response
+                const res = await fetch("/search", {
+                    method: "POST",
+                    body: JSON.stringify({ productName }),
+                    headers: { "Content-Type": "application/json" },
+                });
+                // get payload
+                const payload = await res.json();
+                spinnerEl.classList.remove("busy");
+                // check length of payload
+                if (payload.data.length === 0) {
+                    messageEl.textContent = "No product found by this name";
+                } else {
+                    // print products filtered products to screen
+                    payload.data.forEach((product) => {
+                        let productCard = `<div class="result-card" product-id="${product.id}" variant-id="${product.variants[0].product_id}">
+    <div class="card mb-3 mt-3" style="max-width: 540px">
         <div class="row no-gutters">
           <div class="col-md-4">
             <img
@@ -58,34 +129,38 @@
           </div>
           <div class="col-md-8">
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${product.name}</h5>
-              <p class="card-text">
-                ${product.short_description}
-              </p>
-
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">
+                    ${product.short_description}
+                    <br>
+                    <p class="text-muted"><b>Type:</b> ${product.primary_category_id}</p>
+                    <p class="text-muted"><b>Price:</b> ${product.price} ${product.currency} </p>
+                </p>
+            </div>
               <div class="card-footer bg-transparent border-dark mt-auto">
                 <div class="row">
-                  <div class="col sm-6">
-                    <p>Price: ${product.currency} ${product.price}</p>
+                  <div class="col-6">
+                      <button class="btn btn-warning add-btn" onclick="addToCart(this)"><i class="fa-solid fa-cart-plus fa-2x"></i></button>
                   </div>
-                  <div class="col sm-6">
-                    <a href="/product/${product.primary_category_id}/${product.id}" class="btn btn-primary">More Info</a>
+                  <div class="col-6">
+                    <button class="btn btn-danger add-btn" onclick="addToWishlist(this)"><i class="fa-solid fa-heart fa-2x"></i></button>
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>`;
-
-            searchResultsEl.innerHTML += productCard;
-          });
+    </div>
+</div>`;
+                        searchResultsEl.innerHTML += productCard;
+                    });
+                }
+            } catch (err) {
+                messageEl.textContent = "No product found by this name";
+            }
+        } else {
+            messageEl.textContent = "No product found by this name";
         }
-      } catch (err) {
-        messageEl.textContent = "No product found by this name";
-      }
-    } else{
-      messageEl.textContent = "No product found by this name";
-    }
-  });
+    });
 </script>
