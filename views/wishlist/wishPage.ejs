@@ -1,9 +1,10 @@
 <%- include("../partials/headUpper.ejs",{title:'Alibazon - Wishlist'}) %>
 
 <%- include("../partials/headBottom.ejs") %>
-
+<%- include("../partials/nav.ejs") %>
 <div class="container">
-  <%- include("../partials/nav.ejs") %> <%- include("./upperBanner.ejs") %>
+   
+  <%- include("./upperBanner.ejs") %>
 
   <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
@@ -11,9 +12,9 @@
     </div>
   </div>
 
-  <%-include("../partials/footer.ejs") %>
+  
 </div>
-
+<%-include("../partials/footer.ejs") %>
 <%- include('../partials/bottom.ejs') %>
 
 <script src="/javascripts/wishScript.js"></script>

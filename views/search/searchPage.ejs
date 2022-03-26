@@ -2,19 +2,19 @@
 <link rel="stylesheet" href="/stylesheets/search.css" />
 
 <%- include("../partials/headBottom.ejs") %>
-
+<%- include("../partials/nav.ejs") %>
 <div class="container">
-    <%- include("../partials/nav.ejs") %> <%- include("./searchbar.ejs") %> <%-
-    include('./spinner.ejs') %>
+     
+    <%- include("./searchbar.ejs") %> 
+    <%- include('./spinner.ejs') %>
 
     <div class="row justify-content-center">
         <div id="searchResults"></div>
         <div><p class="text-danger" id="message"></p></div>
     </div>
-
-    <%-include("../partials/footer.ejs") %>
 </div>
 
+<%-include("../partials/footer.ejs") %>
 <%- include('../partials/bottom.ejs') %>
 
 <script>

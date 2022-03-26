@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="/stylesheets/user-profile.style.css" />
 
 <%- include("../partials/headBottom.ejs") %> <% if(user) { %>
-
+<%- include("../partials/nav.ejs") %> 
 <div class="container">
-    <%- include("../partials/nav.ejs") %> <%-
-    include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
+    
+    <%-include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
 
     <div class="ui-bg-cover ui-bg-overlay-container text-white">
         <div class="container">
@@ -41,12 +41,15 @@
             </ul>
         </div>
     </div>
+</div>
 
-    <div class="container h-100">
-        <div class="row h-100 justify-content-center">
-            <%-include("../partials/footer.ejs") %>
-        </div>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center">
+        <%-include("../partials/footer.ejs") %>
     </div>
 </div>
-<% } else {%> <%- include('../error.ejs', {message:"Not authenticated."}) %> <%
-} %> <%- include('../partials/bottom.ejs') %>
+
+<% } else {%> 
+    <%- include('../error.ejs', {message:"Not authenticated."}) %> 
+<% } %> 
+<%- include('../partials/bottom.ejs') %>

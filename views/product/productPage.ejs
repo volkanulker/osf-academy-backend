@@ -1,9 +1,9 @@
 <%- include("../partials/headUpper.ejs",{title:'Alibazon - Products'}) %>
 <link rel="stylesheet" href="/stylesheets/product-page.style.css" />
 <%- include("../partials/headBottom.ejs") %>
-
+<%- include('../partials/nav.ejs') %>
 <div class="container">
-  <%- include('../partials/nav.ejs') %>
+  
   <%-include('../partials/breadcrumb.ejs')%> 
   <% if(productsOnLeft.length === 0  && productsOnRight.length === 0) { %>
     <!-- Render a error message if not product found -->
@@ -34,8 +34,7 @@
 
   <% } %> 
   
-  <%- include('../partials/footer.ejs') %>
 </div>
-
+<%- include('../partials/footer.ejs') %>
 <%- include('../partials/bottom.ejs') %>
 
