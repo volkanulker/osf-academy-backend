@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { getProfilePageIndex } = require('../controllers/profileController')
 
-
-router.get("/", (req, res) => {
-    const email = req.cookies.email;
-    res.render('./profile/userProfile', {breadcrumbObjects:[], email:email })
-} );
+router.get("/", getProfilePageIndex);
 
 
 

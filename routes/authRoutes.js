@@ -1,20 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const authController = require('../controllers/authController')
+const {
+    getSigninIndex,
+    getSignupIndex,
+    postSigninIndex,
+    postSignupIndex,
+    logout,
+} = require("../controllers/authController");
 
-router.get('/signin', authController.signin_index)
+router.get("/signin", getSigninIndex);
 
+router.get("/signup", getSignupIndex);
 
-router.get('/signup', authController.signup_index)
+router.post("/signin", postSigninIndex);
 
+router.post("/signup", postSignupIndex);
 
-router.post('/signin', authController.signin_post)
-
-
-router.post('/signup', authController.signup_post )
-
-
-router.get('/logout', authController.logout)
-
+router.get("/logout", logout);
 
 module.exports = router;

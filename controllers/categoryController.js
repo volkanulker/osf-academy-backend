@@ -10,7 +10,7 @@ Sentry.init({
 
 const apiErrorMessage = "An API service error is occured."
 
-module.exports.parentCategorySelection_get = (req, res, next) => {
+module.exports.getGenderCategorySelection = (req, res, next) => {
     const gender = req.params.gender;
     if (gender === "mens" || gender === "womens") {
       categoryRequest.getAllParentCategories(gender, (error, data) => {
@@ -33,7 +33,7 @@ module.exports.parentCategorySelection_get = (req, res, next) => {
   }
 
 
-  module.exports.subCategorySelection_get = (req, res, next) => {
+  module.exports.getSubcategorySelection = (req, res, next) => {
     const gender = req.params.gender;
     const parentCategoryName = req.params.parentCategoryName;
   

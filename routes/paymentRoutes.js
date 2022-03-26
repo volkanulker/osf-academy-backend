@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const paymentController = require('../controllers/paymentController')
+const {createCheckoutSession, successPayment, cancelPayment} = require('../controllers/paymentController')
 
-router.post('/create-checkout-session', paymentController.createCheckoutSession)
+router.post('/create-checkout-session', createCheckoutSession)
 
+router.get('/success', successPayment)
 
-router.get('/success', paymentController.successPayment)
-
-router.get('/cancel', paymentController.cancelPayment)
+router.get('/cancel', cancelPayment)
 
 
 module.exports = router;

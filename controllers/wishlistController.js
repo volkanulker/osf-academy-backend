@@ -22,7 +22,8 @@ const getNameOfVariant = (cartItem, productObj) => {
             if (attr.id === key) {
                 attr.values.forEach((valueObj) => {
                     if (
-                        cartItem.variant.variation_values[key] === valueObj.value
+                        cartItem.variant.variation_values[key] ===
+                        valueObj.value
                     ) {
                         variationObjWithNames[key] = valueObj.name;
                     }
@@ -62,7 +63,7 @@ const getWishObject = (productData, wishItems, wishItemIndex) => {
     return wishObject;
 };
 
-module.exports.wishlist_index = async (req, res) => {
+module.exports.getWishlistIndex = async (req, res) => {
     const token = req.cookies.jwt;
     let wishObjects = [];
     wishRequests.getWishlist(token, async (wishError, wishData) => {
@@ -74,7 +75,9 @@ module.exports.wishlist_index = async (req, res) => {
         }
 
         if (wishData.error) {
-            if (wishData.error === "There is no wishlist created for this user") {
+            if (
+                wishData.error === "There is no wishlist created for this user"
+            ) {
                 return res
                     .status(200)
                     .render("wishlist/wishPage", { wishObjects });
@@ -101,7 +104,9 @@ module.exports.wishlist_index = async (req, res) => {
                         productId,
                         (productErr, productData) => {
                             if (productData.error) {
-                                Sentry.captureException(new Error(productData.error))
+                                Sentry.captureException(
+                                    new Error(productData.error)
+                                );
                                 reject(productData.error);
                             } else {
                                 let wishObject = getWishObject(

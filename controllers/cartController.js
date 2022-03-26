@@ -77,7 +77,7 @@ const getCartTotalPrice = (cartObjects) => {
     return total;
 };
 
-module.exports.cart_index = async (req, res) => {
+module.exports.getCartIndex = async (req, res) => {
     const token = req.cookies.jwt;
     let cartObjects = [];
     cartRequests.getCart(token, async (cartError, cartData) => {

@@ -9,7 +9,6 @@ Sentry.init({
     attachStacktrace: true,
 });
 
-
 const apiErrorMessage = "An API service error is occured.";
 /*
  * Method to pop product id from pop
@@ -51,7 +50,7 @@ const getProductDetailObject = (productData) => {
     });
 };
 
-module.exports.productPage_get = (req, res, next) => {
+module.exports.getProductList = (req, res, next) => {
     const subCategory = req.params.subCategory;
     let pageNo = req.query.page;
 
@@ -62,8 +61,10 @@ module.exports.productPage_get = (req, res, next) => {
         pageNo,
         (error, data) => {
             if (error) {
-                Sentry.captureException(error)
-                return res.status(500).render("error", { message: apiErrorMessage });
+                Sentry.captureException(error);
+                return res
+                    .status(500)
+                    .render("error", { message: apiErrorMessage });
             }
 
             const url = req.url;
@@ -104,12 +105,14 @@ module.exports.productPage_get = (req, res, next) => {
     );
 };
 
-module.exports.productDetail_get = (req, res, next) => {
+module.exports.getProductDetails = (req, res, next) => {
     const productId = req.params.productId;
     productRequest.getProductById(productId, (error, data) => {
         if (error) {
-            Sentry.captureException(error)
-            return res.status(500).render("error", { message: apiErrorMessage });
+            Sentry.captureException(error);
+            return res
+                .status(500)
+                .render("error", { message: apiErrorMessage });
         }
         if (data.error) {
             return res.render("error", { message: data.error });
@@ -148,10 +151,10 @@ module.exports.getVariationId = (req, res) => {
     const variationObj = req.body.variationObj;
     const productId = req.body.productId;
     let isVariationFound = false;
-    
+
     productRequest.getProductById(productId, (error, data) => {
         if (error) {
-            Sentry.captureException(error)
+            Sentry.captureException(error);
             return res.status(500).json({ error: apiErrorMessage });
         }
         if (data.error) {

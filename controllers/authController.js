@@ -7,15 +7,15 @@ Sentry.init({
     attachStacktrace: true,
 });
 
-module.exports.signin_index = (req, res) => {
+module.exports.getSigninIndex = (req, res) => {
     res.status(200).render("auth/signin");
 };
 
-module.exports.signup_index = (req, res) => {
+module.exports.getSignupIndex = (req, res) => {
     res.status(200).render("auth/signup");
 };
 
-module.exports.signin_post = async (req, res) => {
+module.exports.postSigninIndex = async (req, res) => {
     const { email, password } = req.body;
 
     authRequest.signin(email, password, (error, data) => {
@@ -44,7 +44,7 @@ module.exports.signin_post = async (req, res) => {
     });
 };
 
-module.exports.signup_post = (req, res) => {
+module.exports.postSignupIndex = (req, res) => {
     const { name, email, password } = req.body;
 
     authRequest.signup(name, email, password, (error, data) => {

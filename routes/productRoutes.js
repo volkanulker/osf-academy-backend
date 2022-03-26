@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const productController = require('../controllers/productController')
+const {
+    getProductList,
+    getProductDetails,
+    getVariationId,
+} = require("../controllers/productController");
 
-router.get("/:subCategory", productController.productPage_get);
+router.get("/:subCategory", getProductList);
 
-router.get("/:subCategory/:productId", productController.productDetail_get);
+router.get("/:subCategory/:productId", getProductDetails);
 
-router.post('/get-variation-id',productController.getVariationId )
+router.post("/get-variation-id", getVariationId);
 
 module.exports = router;

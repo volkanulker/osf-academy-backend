@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const categoryController = require('../controllers/categoryController')
+const { getGenderCategorySelection, getSubcategorySelection } = require('../controllers/categoryController')
 
-router.get(`/:gender`, categoryController.parentCategorySelection_get);
+router.get(`/:gender`, getGenderCategorySelection);
 
-router.get("/:gender/:parentCategoryName", categoryController.subCategorySelection_get);
+router.get("/:gender/:parentCategoryName", getSubcategorySelection);
 
 
 module.exports = router;

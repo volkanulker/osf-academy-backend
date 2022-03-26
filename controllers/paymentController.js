@@ -33,7 +33,7 @@ module.exports.createCheckoutSession = async (req, res) => {
         res.status(200).json({ url: session.url });
     } catch (e) {
         Sentry.captureException(e)
-        res.status(500).json({ error: e.message });
+        res.status(500).json({ error: apiErrorMessage });
     }
 };
 
