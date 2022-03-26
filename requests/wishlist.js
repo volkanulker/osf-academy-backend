@@ -8,8 +8,7 @@ Sentry.init({
     attachStacktrace: true,
 });
 
-const urlBase =
-    "https://osf-digital-backend-academy.herokuapp.com/api/wishlist";
+const urlBase = `${process.env.API_BASE_URL}/wishlist`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
 
@@ -28,7 +27,7 @@ module.exports.getWishlist = (token, callback) => {
         },
         (error, response) => {
             if (error) {
-                Sentry.captureException(error)
+                Sentry.captureException(error);
                 callback(errMessage, undefined);
             } else {
                 const data = response.body;
@@ -59,7 +58,7 @@ module.exports.addItem = (token, productId, variantId, quantity, callback) => {
         },
         (error, response) => {
             if (error) {
-                Sentry.captureException(error)
+                Sentry.captureException(error);
                 callback(errMessage, undefined);
             } else {
                 const data = response.body;
@@ -88,7 +87,7 @@ module.exports.removeItem = (token, productId, variantId, callback) => {
         },
         (error, response) => {
             if (error) {
-                Sentry.captureException(error)
+                Sentry.captureException(error);
                 callback(errMessage, undefined);
             } else {
                 const data = response.body;
@@ -124,7 +123,7 @@ module.exports.changeItemQuantity = (
         },
         (error, response) => {
             if (error) {
-                Sentry.captureException(error)
+                Sentry.captureException(error);
                 callback(errMessage, undefined);
             } else {
                 const data = response.body;

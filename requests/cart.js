@@ -8,7 +8,7 @@ Sentry.init({
     attachStacktrace: true,
 });
 
-const urlBase = "https://osf-digital-backend-academy.herokuapp.com/api/cart";
+const urlBase = `${process.env.API_BASE_URL}/cart`;
 
 const secretKey = process.env.SECRET_KEY;
 
