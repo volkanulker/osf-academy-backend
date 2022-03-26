@@ -1,0 +1,52 @@
+<%- include("../partials/headUpper.ejs",{title:'Alibazon - Profile'}) %>
+
+<link rel="stylesheet" href="/stylesheets/user-profile.style.css" />
+
+<%- include("../partials/headBottom.ejs") %> <% if(user) { %>
+
+<div class="container">
+    <%- include("../partials/nav.ejs") %> <%-
+    include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
+
+    <div class="ui-bg-cover ui-bg-overlay-container text-white">
+        <div class="container">
+            <div class="text-center py-5">
+                <img
+                    src="/images/profile/profile-avatar.png"
+                    alt="An avatar logo"
+                    class="ui-w-100 rounded-circle"
+                />
+
+                <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
+                    <h4 class="font-weight-bold my-4"><%= email %></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui-bg-overlay-container">
+            <div class="ui-bg-overlay bg-dark opacity-25"></div>
+            <ul
+                class="nav nav-tabs tabs-alt justify-content-center border-transparent"
+            >
+                <li class="nav-item">
+                    <a class="nav-link text-white py-4" href="/wishlist"
+                        >Wishlist <i class="fa-solid fa-heart"></i
+                    ></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white py-4" href="/cart"
+                        >Cart <i class="fa-solid fa-cart-shopping"></i
+                    ></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center">
+            <%-include("../partials/footer.ejs") %>
+        </div>
+    </div>
+</div>
+<% } else {%> <%- include('../error.ejs', {message:"Not authenticated."}) %> <%
+} %> <%- include('../partials/bottom.ejs') %>
