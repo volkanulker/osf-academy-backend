@@ -11,12 +11,7 @@ const testUser = {
     password: "admin123",
 };
 
-const testUser_2 = {
-    email: 'test123@hotmail.com',
-    password: 'test123'
-}
-
-const testToken_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmM3YzdiOWQ3MjYwMDAyNDYyNGFmMiIsImlhdCI6MTY0ODEzMjA5MCwiZXhwIjoxNjQ4MjE4NDkwfQ.ce1Hvr56kOAHCV8s6h4MY2PWIPwlAORXenkj2VzMRY4"
+const testToken_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2EwOGYyNGY1MjYwMDAyNDkxYmU4NSIsImlhdCI6MTY0ODI5NTg1NSwiZXhwIjoxNjQ4MzgyMjU1fQ._WWiiuf3SepcOcBLLwnGbZ053EOXjFMEwqs0bsvtSx0"
 
 
 
