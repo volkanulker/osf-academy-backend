@@ -1,5 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const Sentry = require("@sentry/node");
+const { getCart } = require("../requests/cart");
+const orderRequets = require("../requests/order");
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -27,17 +29,39 @@ module.exports.createCheckoutSession = async (req, res) => {
                     quantity: product.quantity,
                 };
             }),
-            success_url: `${process.env.SERVER_URL}/payment/success`,
+            success_url: `${process.env.SERVER_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.SERVER_URL}/payment/cancel`,
         });
+
         res.status(200).json({ url: session.url });
     } catch (e) {
-        Sentry.captureException(e)
+        Sentry.captureException(e);
         res.status(500).json({ error: apiErrorMessage });
     }
 };
 
-module.exports.successPayment = (req, res) => {
+module.exports.successPayment = async (req, res) => {
+    const token = req.cookies.jwt;
+    const session = await stripe.checkout.sessions.retrieve(
+        req.query.session_id
+    );
+    const paymentId = session.id;
+    getCart(token, (error, cart) => {
+        if (error) {
+            Sentry.captureException(error);
+            return;
+        }
+
+        const cartItems = cart.items;
+        
+        orderRequets.createOrder(token, paymentId, cartItems, (error, order) => {
+            if (error) {
+                Sentry.captureException(error);
+                return;
+            }
+        });
+    });
+
     res.render("./payment/success");
 };
 
