@@ -1,8 +1,14 @@
-const productRequest = require("../requests/product");
+const { getProductByCategoryId, getProductById } = require("../requests/product");
 const breadcrumbUtils = require("../utils/breadcrumbUtils");
 const _ = require("lodash");
 const Sentry = require("@sentry/node");
-const { getBreadcrumbNavs, getPaginationObject,getProductDetailObject } = require('./controllerUtils/productControllerUtils')
+const {
+    getBreadcrumbNavs,
+    getPaginationObject,
+    getProductDetailObject,
+    getMainCategoryData,
+    getPathsWithoutQuery,
+} = require("./controllerUtils/productControllerUtils");
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -12,17 +18,15 @@ Sentry.init({
 
 const apiErrorMessage = "An API service error is occured.";
 
-
 module.exports.getProductList = (req, res, next) => {
     const subCategory = req.params.subCategory;
     let pageNo = req.query.page;
-
     pageNo === undefined ? (pageNo = 1) : pageNo;
 
-    productRequest.getProductByCategoryId(
+    getProductByCategoryId(
         subCategory,
         pageNo,
-        (error, data) => {
+        async (error, products) => {
             if (error) {
                 Sentry.captureException(error);
                 return res
@@ -30,16 +34,18 @@ module.exports.getProductList = (req, res, next) => {
                     .render("error", { message: apiErrorMessage });
             }
 
+            const mainCategoryData = await getMainCategoryData(subCategory);
             const url = req.url;
             const paths = breadcrumbUtils.getBreadcrumbPaths(url);
-
+            const pathsWithoutQuery = getPathsWithoutQuery(paths);
             const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(
-                paths,
+                pathsWithoutQuery,
                 "/product"
             );
 
-            if (data.error) {
+            if (products.error) {
                 return res.render("./product/productPage", {
+                    mainCategoryData,
                     productsOnLeft: [],
                     productsOnRight: [],
                     breadcrumbObjects: [],
@@ -47,10 +53,13 @@ module.exports.getProductList = (req, res, next) => {
                     numbOfProduct: 0,
                 });
             } else {
-                let halfwayThrough = Math.ceil(data.length / 2);
-                const productsOnLeft = data.slice(0, halfwayThrough);
-                const productsOnRight = data.slice(halfwayThrough, data.length);
-                const numbOfProduct = data.length;
+                let halfwayThrough = Math.ceil(products.length / 2);
+                const productsOnLeft = products.slice(0, halfwayThrough);
+                const productsOnRight = products.slice(
+                    halfwayThrough,
+                    products.length
+                );
+                const numbOfProduct = products.length;
                 const currentPath = breadcrumbObjects[0].href;
                 const paginationObj = getPaginationObject(
                     currentPath,
@@ -58,6 +67,7 @@ module.exports.getProductList = (req, res, next) => {
                     pageNo
                 );
                 return res.render("./product/productPage", {
+                    mainCategoryData,
                     productsOnLeft,
                     productsOnRight,
                     breadcrumbObjects,
@@ -70,7 +80,7 @@ module.exports.getProductList = (req, res, next) => {
 
 module.exports.getProductDetails = (req, res, next) => {
     const productId = req.params.productId;
-    productRequest.getProductById(productId, (error, data) => {
+    getProductById(productId, (error, data) => {
         if (error) {
             Sentry.captureException(error);
             return res
@@ -115,7 +125,7 @@ module.exports.getVariationId = (req, res) => {
     const productId = req.body.productId;
     let isVariationFound = false;
 
-    productRequest.getProductById(productId, (error, data) => {
+    getProductById(productId, (error, data) => {
         if (error) {
             Sentry.captureException(error);
             return res.status(500).json({ error: apiErrorMessage });
@@ -135,7 +145,9 @@ module.exports.getVariationId = (req, res) => {
         if (!isVariationFound) {
             return res
                 .status(400)
-                .json({ error: "Variation could not be found" });
+                .json({
+                    error: "Sorry, that variation is not in stock right now",
+                });
         }
     });
 };

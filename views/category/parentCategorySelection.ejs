@@ -4,9 +4,15 @@
 <%- include("../partials/headBottom.ejs") %>
 <%- include("../partials/nav.ejs") %> 
 <div class="container">
-    
+  
     <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
-    
+
+    <div class="p-3">
+      <h1><%= mainCategoryData.name %></h1>
+      <hr>
+      <p><b><%= mainCategoryData.page_description %></b></p>
+    </div>
+    <br>
 <% parentCategories.forEach( category => { %>
 
   <div class="shadow p-3 mb-5 bg-white rounded">

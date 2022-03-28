@@ -17,13 +17,22 @@
     </div>
 
     <% } else { %> 
-    <!-- Otherwise print products  -->
+   
+    <!-- Print parent category name and description -->
+    <div class="p-3">
+      <h1><%= mainCategoryData.name %></h1>
+      <hr>
+      <p><b><%= mainCategoryData.page_description %></b></p>
+    </div>
+    <br>
+
+     <!-- Print products on the left  -->
     <div class="row">
       <div class="col sm-6">
         <% productsOnLeft.forEach( product => { %> <%-
         include('./productCard.ejs', {product:product}) %> <% }) %>
       </div>
-
+    <!-- Print products on the right  -->
       <div class="col sm-6">
         <% productsOnRight.forEach( product => { %> <%-
         include('./productCard.ejs', {product:product}) %> <% }) %>

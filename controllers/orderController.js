@@ -1,4 +1,4 @@
-const orderRequests = require("../requests/order");
+const { getOrders } = require("../requests/order");
 const Sentry = require("@sentry/node");
 const { getOrderCards } = require('./controllerUtils/orderControllerUtils')
 
@@ -12,7 +12,7 @@ const apiErrorMessage = "An API service error is occured.";
 
 module.exports.getOrders = (req, res) => {
     const token = req.cookies.jwt;
-    orderRequests.getOrders(token, async (error, data) => {
+    getOrders(token, async (error, data) => {
         if (error) {
             Sentry.captureException(error);
             return res

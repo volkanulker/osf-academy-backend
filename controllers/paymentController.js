@@ -1,7 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const Sentry = require("@sentry/node");
 const { getCart } = require("../requests/cart");
-const orderRequets = require("../requests/order");
+const { createOrder } = require("../requests/order");
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -53,8 +53,7 @@ module.exports.successPayment = async (req, res) => {
         }
 
         const cartItems = cart.items;
-        
-        orderRequets.createOrder(token, paymentId, cartItems, (error, order) => {
+        createOrder(token, paymentId, cartItems, (error, order) => {
             if (error) {
                 Sentry.captureException(error);
                 return;

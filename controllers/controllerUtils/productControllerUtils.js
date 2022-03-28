@@ -1,4 +1,5 @@
 const breadcrumbUtils = require("../../utils/breadcrumbUtils");
+const { getCategoryById } = require('../../requests/category')
 
 /**
  * Function to pop product id from pop
@@ -58,8 +59,53 @@ const getProductDetailObject = (productData) => {
     });
 };
 
+
+/**
+ * Function to get main category name and description
+ * of given parent category
+ * @param { string } parentCategoryId
+ * @returns  { object }
+ */
+getMainCategoryData = async (parentCategoryId) => {
+    let parentCategoryData;
+    await new Promise((resolve, reject) => {
+        getCategoryById(parentCategoryId, (error, categoryData) => {
+            if (error) {
+                reject(error)
+                Sentry.captureException(error);
+                return
+            }
+            resolve(categoryData)
+        })
+    }).then((categoryData) => {
+        const { name, page_description } = categoryData;
+        parentCategoryData = {
+            name,
+            page_description,
+        };
+    });
+    return parentCategoryData;
+};
+
+/**
+ * Function to remove the query string from last path element
+ * @param { string[] } paths 
+ * @returns { string[] }
+ */
+ const getPathsWithoutQuery = (paths) => {
+    const lastElement = paths.pop()
+    const pathWithoutQuery = lastElement.split('?')[0]
+    paths.push(pathWithoutQuery)
+    return paths
+
+}
+
+
 module.exports = {
     getBreadcrumbNavs,
     getPaginationObject,
-    getProductDetailObject
+    getProductDetailObject,
+    getMainCategoryData,
+    getPathsWithoutQuery
+    
 }

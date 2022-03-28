@@ -1,7 +1,8 @@
-const wishRequests = require("../requests/wishlist.js");
+const { getWishlist, addItem, removeItem } = require("../requests/wishlist.js");
 const productRequets = require("../requests/product");
 const Sentry = require("@sentry/node");
-const { getWishObject } = require('./controllerUtils/wishlistControllerUtils')
+const { getWishObject } = require("./controllerUtils/wishlistControllerUtils");
+
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
@@ -10,11 +11,10 @@ Sentry.init({
 
 const apiErrorMessage = "An API service error is occured.";
 
-
 module.exports.getWishlistIndex = async (req, res) => {
     const token = req.cookies.jwt;
     let wishObjects = [];
-    wishRequests.getWishlist(token, async (wishError, wishData) => {
+    getWishlist(token, async (wishError, wishData) => {
         if (wishError) {
             Sentry.captureException(wishError);
             return res
@@ -23,9 +23,7 @@ module.exports.getWishlistIndex = async (req, res) => {
         }
 
         if (wishData.error) {
-            if (
-                wishData.error === "There is no wishlist created for this user"
-            ) {
+            if ( wishData.error === "There is no wishlist created for this user") {
                 return res
                     .status(200)
                     .render("wishlist/wishPage", { wishObjects });
@@ -91,32 +89,26 @@ module.exports.addItem = (req, res) => {
     const variantId = req.body.variantId;
     const quantity = req.body.quantity;
 
-    wishRequests.addItem(
-        token,
-        productId,
-        variantId,
-        quantity,
-        (error, data) => {
-            if (error) {
-                Sentry.captureException(error);
-                return res.status(500).json({ error: error });
-            }
-            if (data) {
-                if (data.error) {
-                    return res.status(400).json({ error: data.error });
-                }
-            }
-
-            return res.status(200).json({ data: data });
+    addItem(token, productId, variantId, quantity, (error, data) => {
+        if (error) {
+            Sentry.captureException(error);
+            return res.status(500).json({ error: error });
         }
-    );
+        if (data) {
+            if (data.error) {
+                return res.status(400).json({ error: data.error });
+            }
+        }
+
+        return res.status(200).json({ data: data });
+    });
 };
 
 module.exports.removeItem = (req, res) => {
     const token = req.cookies.jwt;
     const productId = req.body.productId;
     const variantId = req.body.variantId;
-    wishRequests.removeItem(token, productId, variantId, (error, data) => {
+    removeItem(token, productId, variantId, (error, data) => {
         if (error) {
             Sentry.captureException(error);
             return res.status(500).json({ error: apiErrorMessage });

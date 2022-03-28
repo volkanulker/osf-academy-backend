@@ -1,7 +1,15 @@
-const cartRequests = require("../requests/cart.js");
+const {
+    getCart,
+    changeItemQuantity,
+    removeItem,
+    addItem,
+} = require("../requests/cart.js");
 const productRequets = require("../requests/product");
 const Sentry = require("@sentry/node");
-const { getCartObject, getCartTotalPrice } = require('./controllerUtils/cartContollerUtils')
+const {
+    getCartObject,
+    getCartTotalPrice,
+} = require("./controllerUtils/cartContollerUtils");
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -14,7 +22,7 @@ const apiErrorMessage = "An API service error is occured.";
 module.exports.getCartIndex = async (req, res) => {
     const token = req.cookies.jwt;
     let cartObjects = [];
-    cartRequests.getCart(token, async (cartError, cartData) => {
+    getCart(token, async (cartError, cartData) => {
         if (cartError) {
             return res
                 .status(500)
@@ -71,7 +79,7 @@ module.exports.getCartIndex = async (req, res) => {
         await Promise.all(promises);
 
         let cartTotalPrice = getCartTotalPrice(cartObjects);
-        
+
         return res
             .status(200)
             .render("cart/cartPage", { cartObjects, cartTotalPrice });
@@ -83,7 +91,7 @@ module.exports.changeQuantity = (req, res) => {
     const newQuantity = req.body.quantityValue;
     const productId = req.body.productId;
     const variantId = req.body.variantId;
-    cartRequests.changeItemQuantity(
+    changeItemQuantity(
         token,
         productId,
         variantId,
@@ -106,7 +114,7 @@ module.exports.removeItem = (req, res) => {
     const token = req.cookies.jwt;
     const productId = req.body.productId;
     const variantId = req.body.variantId;
-    cartRequests.removeItem(token, productId, variantId, (error, data) => {
+    removeItem(token, productId, variantId, (error, data) => {
         if (error) {
             Sentry.captureException(error);
             return res.status(500).json({ error: apiErrorMessage });
@@ -126,22 +134,16 @@ module.exports.addItem = (req, res) => {
     const variantId = req.body.variantId;
     const quantity = req.body.quantity;
 
-    cartRequests.addItem(
-        token,
-        productId,
-        variantId,
-        quantity,
-        (error, data) => {
-            if (error) {
-                Sentry.captureException(error);
-                return res.status(500).json({ error: apiErrorMessage });
-            }
-            if (data) {
-                if (data.error) {
-                    return res.status(400).json({ error: data.error });
-                }
-            }
-            return res.status(200).json({ data: data });
+    addItem(token, productId, variantId, quantity, (error, data) => {
+        if (error) {
+            Sentry.captureException(error);
+            return res.status(500).json({ error: apiErrorMessage });
         }
-    );
+        if (data) {
+            if (data.error) {
+                return res.status(400).json({ error: data.error });
+            }
+        }
+        return res.status(200).json({ data: data });
+    });
 };

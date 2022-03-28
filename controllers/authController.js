@@ -1,4 +1,4 @@
-const authRequest = require("../requests/auth");
+const { signin, signup } = require("../requests/auth");
 const Sentry = require("@sentry/node");
 
 Sentry.init({
@@ -18,9 +18,9 @@ module.exports.getSignupIndex = (req, res) => {
 module.exports.postSigninIndex = async (req, res) => {
     const { email, password } = req.body;
 
-    authRequest.signin(email, password, (error, data) => {
+    signin(email, password, (error, data) => {
         if (error) {
-            Sentry.captureException(error)
+            Sentry.captureException(error);
             return res.status(500).json({ error: error });
         }
 
@@ -47,7 +47,7 @@ module.exports.postSigninIndex = async (req, res) => {
 module.exports.postSignupIndex = (req, res) => {
     const { name, email, password } = req.body;
 
-    authRequest.signup(name, email, password, (error, data) => {
+    signup(name, email, password, (error, data) => {
         if (error) {
             return res.status(500).json({ error: error });
         }

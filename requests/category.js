@@ -26,7 +26,7 @@ const getAllCategories = (callback) => {
     });
 };
 
-const getCategoriesByParentId = (id, callback) => {
+module.exports.getCategoriesByParentId = (id, callback) => {
     const path = `/parent/${id}`;
     const url = urlBase + path + `?secretKey=${secretKey}`;
 
@@ -41,7 +41,7 @@ const getCategoriesByParentId = (id, callback) => {
     });
 };
 
-const getCategoryById = (categoryId, callback) => {
+module.exports.getCategoryById = (categoryId, callback) => {
     const path = `/${categoryId}`;
     const url = urlBase + path + `?secretKey=${secretKey}`;
 
@@ -73,7 +73,7 @@ module.exports.getAllParentCategories = (gender, callback) => {
 };
 
 module.exports.getAllSubCategories = (gender, parentCategoryName, callback) => {
-    getCategoriesByParentId(
+    this.getCategoriesByParentId(
         gender + "-" + parentCategoryName.toLowerCase(),
         (error, data) => {
             if (error) {

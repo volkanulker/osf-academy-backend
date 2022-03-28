@@ -7,6 +7,13 @@
 
     <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
 
+    <div class="p-3">
+      <h1><%= subCategoryData.name %></h1>
+      <hr>
+      <p><b><%= subCategoryData.page_description %></b></p>
+    </div>
+    <br>
+
 <% subCategories.forEach( category => { %>
   
   <div class="shadow p-3 mb-5 bg-white rounded">
