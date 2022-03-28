@@ -7,9 +7,11 @@ chai.should();
 
 chai.use(chaiHttp);
 
-
-const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
+/**
+ * Function to generate unique email
+ * @param { int } length 
+ * @returns 
+ */
 function generateUniqueEmail(length) {
     return  crypto.randomBytes(12).toString('hex');
 }

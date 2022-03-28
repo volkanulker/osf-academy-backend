@@ -6,14 +6,18 @@ require("dotenv").config();
 chai.should();
 chai.use(chaiHttp);
 
+/**
+ * Testing variables
+ */
 const testUser = {
     email: "admin@hotmail.com",
     password: "admin123",
 };
 
-const testToken_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2EwOGYyNGY1MjYwMDAyNDkxYmU4NSIsImlhdCI6MTY0ODI5NTg1NSwiZXhwIjoxNjQ4MzgyMjU1fQ._WWiiuf3SepcOcBLLwnGbZ053EOXjFMEwqs0bsvtSx0"
-
-
+const testUser_2 = {
+    email: "cartTester@hotmail.com",
+    password: "123",
+};
 
 const deleteItemBody = {
     productId: "21736758",
@@ -33,21 +37,29 @@ const changeQuantityBody = {
 };
 
 let testToken_1 = "";
+let testToken_2 = "";
 
 describe("CART API", () => {
-
-    describe('TEST GET CART', () => {
-        it('It should render cart page', (done) => {
+    describe("TEST GET CART", () => {
+        it("It should render cart page", (done) => {
+            // signin and get token of user
             chai.request(server)
-            .get('/cart')
-            .set('Cookie', `jwt=${testToken_2}`)
-            .end((error, response) => {
-                response.should.have.status(200)
+                .post("/auth/signin")
+                .send(testUser_2)
+                .end((error, response) => {
+                    testToken_2 = response.body.token;
+                    // test get cart
+                    chai.request(server)
+                        .get("/cart")
+                        .set("Cookie", `jwt=${testToken_2}`)
+                        .end((error, response) => {
+                            response.should.have.status(200);
+                        });
+                });
 
-            })
             done();
-        })
-    })
+        });
+    });
 
     describe("TEST ALL POST REQUESTS ", () => {
         it("It should signin user && add && change quantity && delete cart item", (done) => {

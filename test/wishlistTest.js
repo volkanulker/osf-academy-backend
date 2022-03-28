@@ -6,13 +6,16 @@ require("dotenv").config();
 chai.should();
 chai.use(chaiHttp);
 
+// test variables
 const testUser = {
     email: "admin@hotmail.com",
     password: "admin123",
 };
 
-const testToken_2 =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2EwOGYyNGY1MjYwMDAyNDkxYmU4NSIsImlhdCI6MTY0ODI5NTg1NSwiZXhwIjoxNjQ4MzgyMjU1fQ._WWiiuf3SepcOcBLLwnGbZ053EOXjFMEwqs0bsvtSx0";
+const testUser_2 = {
+    email: "wishTester@hotmail.com",
+    password: "123",
+};
 
 const deleteItemBody = {
     productId: "21736758",
@@ -26,16 +29,27 @@ const addItemBody = {
 };
 
 let testToken_1 = "";
+let testToken_2 = "";
 
 describe("WISHLIST API", () => {
     describe("TEST /GET WISHLIST ", () => {
         it("It should render wishlist page", (done) => {
+            // signin to user
             chai.request(server)
-                .get("/wishlist")
-                .set("Cookie", `jwt=${testToken_2}`)
+                .post("/auth/signin")
+                .send(testUser_2)
                 .end((error, response) => {
+                    testToken_2 = response.body.token;
                     response.should.have.status(200);
+                    // get wishlist
+                    chai.request(server)
+                        .get("/wishlist")
+                        .set("Cookie", `jwt=${testToken_2}`)
+                        .end((error, response) => {
+                            response.should.have.status(200);
+                        });
                 });
+
             done();
         });
     });

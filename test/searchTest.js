@@ -1,38 +1,39 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../app.js");
+require("dotenv").config();
 
 // Assertion style
 chai.should();
 chai.use(chaiHttp);
 
-describe("Index page requests", () => {
-    // GET request tests
-    describe("GET /", () => {
-        // Test home page
-        it("It should redirected to home page", (done) => {
+
+describe("SEARCH API", () => {
+    describe("TEST /GET Search ", () => {
+        // get Search Page
+        it("It should render the search page", (done) => {
             chai
             .request(server)
-            .get("/")
+            .get("/search")
             .end((error, response) => {
                 response.should.have.status(200);
             });
             done();
         });
+    });
 
-    })
-
-    describe("GET /home", () => {
-        // Test home page
-        it("It should render the home page", (done) => {
+    describe("TEST /POST Search ", () => {
+        // search for a product test
+        it("It should search for a product", (done) => {
             chai
             .request(server)
-            .get("/home")
+            .post("/search")
+            .send('cotton')
             .end((error, response) => {
                 response.should.have.status(200);
             });
             done();
         });
-    })
- 
+    });
+
 });
