@@ -8,7 +8,7 @@ Sentry.init({
     attachStacktrace: true,
 });
 
-const urlBase = "https://osf-digital-backend-academy.herokuapp.com/api/orders";
+const urlBase =`${process.env.API_BASE_URL}/orders`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
 
