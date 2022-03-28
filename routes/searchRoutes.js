@@ -34,8 +34,8 @@ router.post("/", (req, res) => {
         /* I have to use
         ** Big-O(n^2) algorithm because api does not support
         * searching all product by names we can only search products 
-        page by page */ 
-         
+        page by page */
+
         data.forEach((page) => {
             if (page !== undefined) {
                 page.forEach((product) => {
