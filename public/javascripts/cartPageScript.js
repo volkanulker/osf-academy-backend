@@ -9,7 +9,6 @@ async function decreaseQuantity(elementRef) {
   if (quantityValue > 1) {
     quantityValue -= 1;
     quantityEl.setAttribute("value", quantityValue);
-    console.log(quantityEl.getAttribute("value"));
 
     try {
       const res = await fetch("/cart/change-quantity", {

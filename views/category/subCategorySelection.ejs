@@ -8,6 +8,8 @@
     <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
 
 <% subCategories.forEach( category => { %>
+  
+  <div class="shadow p-3 mb-5 bg-white rounded">
     <h2><%= category.name %></h2>
     <div class="card mb-5">
         <img class="card-img-top" src="../../images/<%= category.image %>" alt="Card image cap">
@@ -17,8 +19,10 @@
           <a href="/product/<%= category.id %>?page=1" class="btn btn-dark">View Products</a>
         </div>
       </div>
+  </div>
 
-    <% }) %>
+
+<% }) %>
 
 </div>
 <%- include('../partials/footer.ejs') %>
