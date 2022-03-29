@@ -1,5 +1,7 @@
-/*
- * method to get breadcrumb path components as an array
+/**
+ * Function to get breadcrumb paths
+ * @param { string } url 
+ * @returns { string[] }
  */
 module.exports.getBreadcrumbPaths = (url) => {
   const currentUrl = url;
@@ -8,8 +10,12 @@ module.exports.getBreadcrumbPaths = (url) => {
   return splittedUrlArr;
 };
 
-/*
- * method to get breadcrumb objects  as an array
+
+/**
+ * Function to get breadcrumb objects  as an array
+ * @param { string[] } pathArray 
+ * @param { string } base 
+ * @returns { object[] }
  */
 module.exports.getBreadcrumbObjects = (pathArray, base) => {
   const breadcrumbObjects = [];

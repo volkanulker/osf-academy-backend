@@ -44,7 +44,7 @@ module.exports.getProductList = (req, res, next) => {
             );
 
             if (products.error) {
-                return res.render("./product/productPage", {
+                return res.render("./product/productList", {
                     mainCategoryData,
                     productsOnLeft: [],
                     productsOnRight: [],
@@ -66,7 +66,7 @@ module.exports.getProductList = (req, res, next) => {
                     numbOfProduct,
                     pageNo
                 );
-                return res.render("./product/productPage", {
+                return res.render("./product/productList", {
                     mainCategoryData,
                     productsOnLeft,
                     productsOnRight,
