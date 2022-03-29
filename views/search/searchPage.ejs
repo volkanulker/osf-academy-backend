@@ -80,6 +80,16 @@
 </script>
 
 <script>
+    function getNumberOfItemToDisplay(productArr){
+        if(productArr.length > 25){
+            return 25
+        }
+        return productArr.length
+    }
+</script>
+
+
+<script>
     const form = document.querySelector("form");
     const spinnerEl = document.getElementById("spinner");
 
@@ -111,53 +121,68 @@
                 // get payload
                 const payload = await res.json();
                 spinnerEl.classList.remove("busy");
+                let numberOfItemToDisplay = getNumberOfItemToDisplay(payload.data)
+                console.log(numberOfItemToDisplay)
                 // check length of payload
                 if (payload.data.length === 0) {
                     messageEl.textContent = "No product found by this name";
                 } else {
                     // print products filtered products to screen
                     payload.data.forEach((product) => {
-                        let productCard = `
-                        <div class="result-card" product-id="${product.id}" variant-id="${product.variants[0].product_id}">
-                            <div class="card mb-3 mt-3" style="max-width: 540px">
-                                <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img
-                                    src="/images/${product.image_groups[0].images[0].link}"
-                                    class="card-img"
-                                    alt="${product.image_groups[0].images[0].alt}"
-                                    />
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">${product.name}</h5>
-                                        <p class="card-text">
-                                            ${product.short_description}
-                                            <br>
-                                            <p class="text-muted"><b>Type:</b> ${product.primary_category_id}</p>
-                                            <p class="text-muted"><b>Price:</b> ${product.price} ${product.currency} </p>
-                                        </p>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-dark mt-auto">
-                                        <div class="row">
-                                        <div class="col-6">
-                                            <button class="btn btn-warning add-btn" onclick="addToCart(this)"><i class="fa-solid fa-cart-plus fa-2x"></i></button>
-                                        </div>
-                                        <div class="col-6">
-                                            <button class="btn btn-danger add-btn" onclick="addToWishlist(this)"><i class="fa-solid fa-heart fa-2x"></i></button>
-                                        </div>
 
+                        if(! (typeof product.variants[0] === 'undefined') )
+                        {
+                                let productCard = `
+                            <div class="result-card hide" product-id="${product.id}" variant-id="${product.variants[0].product_id}">
+                                <div class="card mb-3 mt-3" style="max-width: 540px">
+                                    <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <img
+                                        src="/images/${product.image_groups[0].images[0].link}"
+                                        class="card-img"
+                                        alt="${product.image_groups[0].images[0].alt}"
+                                        />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">${product.name}</h5>
+                                            <p class="card-text">
+                                                ${product.short_description}
+                                                <br>
+                                                <p class="text-muted"><b>Type:</b> ${product.primary_category_id}</p>
+                                                <p class="text-muted"><b>Price:</b> ${product.price} ${product.currency} </p>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer bg-transparent border-dark mt-auto">
+                                            <div class="row">
+                                            <div class="col-6">
+                                                <button class="btn btn-warning add-btn" onclick="addToCart(this)"><i class="fa-solid fa-cart-plus fa-2x"></i></button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button class="btn btn-danger add-btn" onclick="addToWishlist(this)"><i class="fa-solid fa-heart fa-2x"></i></button>
+                                            </div>
+
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
-                        </div>`;
-                        searchResultsEl.innerHTML += productCard;
+                            </div>`;
+                            searchResultsEl.innerHTML += productCard;
+                        }
+
                     });
+                    
+                    const searchResultCards = searchResultsEl.children
+                    for (let index = 0; index < numberOfItemToDisplay; index++) {
+                        let productCardEl = searchResultCards.item(index)
+                        productCardEl.classList.remove('hide')
+                    }
+                    
                 }
             } catch (err) {
+                console.log(err)
                 messageEl.textContent = "No product found by this name";
             }
         } else {

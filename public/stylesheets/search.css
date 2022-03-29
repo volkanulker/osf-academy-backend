@@ -11,6 +11,10 @@
 }
 
 
+.hide{
+    display: none;
+}
+
 .add-btn {
     width: 120px;
     height: 60px;
