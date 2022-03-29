@@ -1,4 +1,4 @@
-const request = require("request");
+const request = require('postman-request');
 require("dotenv").config();
 
 const Sentry = require("@sentry/node");
