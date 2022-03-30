@@ -53,7 +53,7 @@ async function addToCard(elementRef) {
 
     if (responseData.error) {
       if (responseData.error === "Invalid Token") {
-        errorMessageEl.textContent = "Please login to your account first.";
+        alert("Please login to your account first.");
       } else {
         errorMessageEl.textContent = responseData.error;
       }

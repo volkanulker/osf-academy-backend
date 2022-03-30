@@ -25,6 +25,6 @@ form.addEventListener("submit", async (e) => {
       location.assign("/");
     }
   } catch (err) {
-    // fetch api never throws an error
+    alert('An error occured please try again later.')
   }
 });

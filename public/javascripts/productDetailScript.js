@@ -80,7 +80,7 @@ async function addToWishlist() {
       });
 
       const responseData = await res.json();
-
+      console.log(responseData)
       if (responseData.error) {
         if (responseData.error === "Invalid Token") {
           alert("Please login to your account first.");

@@ -97,8 +97,59 @@ getMainCategoryData = async (parentCategoryId) => {
     const pathWithoutQuery = lastElement.split('?')[0]
     paths.push(pathWithoutQuery)
     return paths
-
 }
+
+/**
+ * Function to split product array
+ * to print on two bootstrap column
+ * @param { object[] } products 
+ * @returns { object } 
+ */
+ const getSplittedProducts = (products) => {
+    let halfwayThrough = Math.ceil(products.length / 2);
+    const productsOnLeft = products.slice(0, halfwayThrough);
+    const productsOnRight = products.slice(halfwayThrough, products.length);
+    return {
+        productsOnLeft,
+        productsOnRight,
+    };
+};
+
+
+/**
+ * Function to check whether variation is found or not
+ * @param { object[] } variants 
+ * @param { object } variationObj 
+ * @returns { boolean } isVariationFound
+ */
+ const checkIfVariationFound = (variants, variationObj) => {
+    let isVariationFound = false;
+    variants.forEach((variant) => {
+        let variationValues = variant.variation_values;
+        if (_.isEqual(variationValues, variationObj)) {
+            isVariationFound = true;
+        }
+    });
+    return isVariationFound;
+};
+
+
+/**
+ * Function to get variant id of a variation
+ * @param { object[] } variants 
+ * @param { object } variationObj 
+ * @returns { int } variantId
+ */
+ const getVariantId = (variants, variationObj) => {
+    let variantId;
+    variants.forEach((variant) => {
+        let variationValues = variant.variation_values;
+        if (_.isEqual(variationValues, variationObj)) {
+            variantId = variant.product_id;
+        }
+    });
+    return variantId;
+};
 
 
 module.exports = {
@@ -106,6 +157,9 @@ module.exports = {
     getPaginationObject,
     getProductDetailObject,
     getMainCategoryData,
-    getPathsWithoutQuery
+    getPathsWithoutQuery,
+    getSplittedProducts,
+    checkIfVariationFound,
+    getVariantId
     
 }

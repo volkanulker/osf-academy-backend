@@ -160,7 +160,7 @@ form.addEventListener("submit", async (e) => {
             // get payload
             const payload = await res.json();
             spinnerEl.classList.remove("busy");
-
+            // get product array
             const productArr = payload.data;
 
             // show more results button
@@ -216,14 +216,12 @@ form.addEventListener("submit", async (e) => {
                         searchResultsEl.innerHTML += productCard;
                     }
                 });
-                let numberOfItemToDisplay =
-                    getNumberOfItemToDisplay(productArr);
+                let numberOfItemToDisplay = getNumberOfItemToDisplay(productArr);
                 printFirstItems(numberOfItemToDisplay);
             }
         } catch (err) {
-            console.log(err);
-            messageEl.textContent =
-                "An error occured while searching products please try again later.";
+            alert('An error occured please try again later.')
+            messageEl.textContent = "An error occured while searching products please try again later.";
         }
     } else {
         messageEl.textContent = "No product found by this name";

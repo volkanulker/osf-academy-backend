@@ -1,4 +1,7 @@
-const { getProductByCategoryId, getProductById } = require("../requests/product");
+const {
+    getProductByCategoryId,
+    getProductById,
+} = require("../requests/product");
 const breadcrumbUtils = require("../utils/breadcrumbUtils");
 const _ = require("lodash");
 const Sentry = require("@sentry/node");
@@ -8,6 +11,9 @@ const {
     getProductDetailObject,
     getMainCategoryData,
     getPathsWithoutQuery,
+    getSplittedProducts,
+    checkIfVariationFound,
+    getVariantId
 } = require("./controllerUtils/productControllerUtils");
 
 Sentry.init({
@@ -18,64 +24,59 @@ Sentry.init({
 
 const apiErrorMessage = "An API service error is occured.";
 
+
+
 module.exports.getProductList = (req, res, next) => {
     const subCategory = req.params.subCategory;
     let pageNo = req.query.page;
     pageNo === undefined ? (pageNo = 1) : pageNo;
 
-    getProductByCategoryId(
-        subCategory,
-        pageNo,
-        async (error, products) => {
-            if (error) {
-                Sentry.captureException(error);
-                return res
-                    .status(500)
-                    .render("error", { message: apiErrorMessage });
-            }
-
-            const mainCategoryData = await getMainCategoryData(subCategory);
-            const url = req.url;
-            const paths = breadcrumbUtils.getBreadcrumbPaths(url);
-            const pathsWithoutQuery = getPathsWithoutQuery(paths);
-            const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(
-                pathsWithoutQuery,
-                "/product"
-            );
-
-            if (products.error) {
-                return res.render("./product/productList", {
-                    mainCategoryData,
-                    productsOnLeft: [],
-                    productsOnRight: [],
-                    breadcrumbObjects: [],
-                    curentPage: -1,
-                    numbOfProduct: 0,
-                });
-            } else {
-                let halfwayThrough = Math.ceil(products.length / 2);
-                const productsOnLeft = products.slice(0, halfwayThrough);
-                const productsOnRight = products.slice(
-                    halfwayThrough,
-                    products.length
-                );
-                const numbOfProduct = products.length;
-                const currentPath = breadcrumbObjects[0].href;
-                const paginationObj = getPaginationObject(
-                    currentPath,
-                    numbOfProduct,
-                    pageNo
-                );
-                return res.render("./product/productList", {
-                    mainCategoryData,
-                    productsOnLeft,
-                    productsOnRight,
-                    breadcrumbObjects,
-                    paginationObj,
-                });
-            }
+    getProductByCategoryId(subCategory, pageNo, async (error, products) => {
+        if (error) {
+            Sentry.captureException(error);
+            return res
+                .status(500)
+                .render("error", { message: apiErrorMessage });
         }
-    );
+
+        const mainCategoryData = await getMainCategoryData(subCategory);
+        const url = req.url;
+        const paths = breadcrumbUtils.getBreadcrumbPaths(url);
+        const pathsWithoutQuery = getPathsWithoutQuery(paths);
+        const breadcrumbObjects = breadcrumbUtils.getBreadcrumbObjects(
+            pathsWithoutQuery,
+            "/product"
+        );
+
+        if (products.error) {
+            return res.render("./product/productList", {
+                mainCategoryData,
+                productsOnLeft: [],
+                productsOnRight: [],
+                breadcrumbObjects: [],
+                curentPage: -1,
+                numbOfProduct: 0,
+            });
+        } else {
+
+            let { productsOnLeft, productsOnRight } = getSplittedProducts(products);
+                
+            const numbOfProducts = products.length;
+            const currentPath = breadcrumbObjects[0].href;
+            const paginationObj = getPaginationObject(
+                currentPath,
+                numbOfProducts,
+                pageNo
+            );
+            return res.render("./product/productList", {
+                mainCategoryData,
+                productsOnLeft,
+                productsOnRight,
+                breadcrumbObjects,
+                paginationObj,
+            });
+        }
+    });
 };
 
 module.exports.getProductDetails = (req, res, next) => {
@@ -120,10 +121,19 @@ module.exports.getProductDetails = (req, res, next) => {
     });
 };
 
+
+
+
 module.exports.getVariationId = (req, res) => {
     const variationObj = req.body.variationObj;
     const productId = req.body.productId;
-    let isVariationFound = false;
+    let isVariationFound;
+    // check whether variant available 
+    if (_.isEmpty(variationObj)) {
+        return res.status(400).json({
+            error: "Please select a variation.",
+        });
+    }
 
     getProductById(productId, (error, data) => {
         if (error) {
@@ -135,19 +145,17 @@ module.exports.getVariationId = (req, res) => {
         }
 
         const variants = data[0].variants;
-        variants.forEach((variant) => {
-            let variationValues = variant.variation_values;
-            if (_.isEqual(variationValues, variationObj)) {
-                isVariationFound = true;
-                return res.status(200).json({ variantId: variant.product_id });
-            }
-        });
+        
+        isVariationFound = checkIfVariationFound(variants, variationObj);
+        if (isVariationFound) { // check whether variation found
+            const variantId = getVariantId(variants, variationObj);
+            return res.status(200).json({ variantId });
+        }
+
         if (!isVariationFound) {
-            return res
-                .status(400)
-                .json({
-                    error: "Sorry, that variation is not in stock right now",
-                });
+            return res.status(400).json({
+                error: "Sorry, that variation is not in stock right now",
+            });
         }
     });
 };
