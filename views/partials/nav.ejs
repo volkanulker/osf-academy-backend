@@ -3,17 +3,17 @@
 
     <ul class="navbar-nav">
       <div class="row">
-        
+        <!-- Nav links that dont need authentication-->
         <li class="nav-item mr-5"><a class="nav-link" href="/search">Search</a></li>
         <li class="nav-item mr-5"><a class="nav-link" href="/category/mens/">Men</a></li>
         <li class="nav-item mr-5"><a class="nav-link" href="/category/womens/">Women</a></li>
-        <% if(user) { %>
+        <% if(user) { %> <!-- Nav links that need authentication -->
           <li class="nav-item mr-5"><a class="nav-link" href="/order/"><i class="fa-solid fa-truck"></i></a></li>
           <li class="nav-item mr-5"><a class="nav-link" href="/wishlist/"><i class="fa-solid fa-heart"></i></a></li>
           <li class="nav-item mr-5"><a class="nav-link" href="/cart/"><i class="fa-solid fa-cart-shopping"></i></a></li>
           <li class="nav-item mr-5"><a class="nav-link" href="/profile">Profile</a></li>
           <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/logout">Log out</a></li>
-        <% } else { %>  
+        <% } else { %> <!-- Nav links that dont need authentication-->
           <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/signin">Sign In</a></li>
           <li class="nav-item mr-5"><a class="nav-link text-primary" href="/auth/signup">Sign Up</a></li>
         <% } %>

@@ -5,8 +5,8 @@
 <%- include("../partials/headBottom.ejs") %>
 <%- include('../partials/nav.ejs') %>
 <div class="container h-100 mb-5">
-   <%-include('../partials/breadcrumb.ejs',
-  {breadcrumbObjects:breadcrumbObjects}) %>
+   <%-include('../partials/breadcrumb.ejs', {breadcrumbObjects:breadcrumbObjects}) %>
+   <!-- Carousel -->
   <div class="row align-items-center h-100">
     <div class="col-4 mx-auto">
       <div
@@ -58,7 +58,7 @@
         </a>
       </div>
     </div>
-
+    <!-- Product Card -->
     <div class="col-8 mx-auto">
       <div class="card-block px-2">
         <h4 class="card-title"><%= name %></h4>
@@ -66,16 +66,19 @@
           <p class="card-text"><%- description %></p>
 
           <% variationAttributesArr.forEach( variation => { %>
+          <!-- Display product variations -->
           <%-include("./variationsCard.ejs", {variationName:
           variation.name,variationValuesArr:variation.values,
           variationId:variation.id }) %> <% }) %>
      
           <div class="row mt-5">
+            <!-- Add to Wishlist Button -->
             <div class="col-3">
               <button class="btn btn-danger add-btn" onclick="addToWishlist()">
                 <i class="fa-solid fa-heart fa-2x"></i></i>
               </button>
             </div>
+            <!-- Add to Card Button -->
             <div class="col-3">
               <button
                 id="add-to-card"
@@ -88,7 +91,7 @@
             <div class="col-6">
               <div class="row">
                 <div class="col-6 align-self-center">
-                  
+                  <!-- Display price -->
                 <p class="text-muted">
                   <b>Price:</b> <%= price %> <%= currency %>
                 </p>
@@ -97,7 +100,7 @@
               </div>
             </div>
           </div>
-
+          <!-- Display error message -->
           <div class="mt-5">
             <div class="row justify-content-center"> 
               <b><h5 id="error-message" class="text-danger"></h5></b>

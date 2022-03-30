@@ -1,5 +1,6 @@
 <div class="card mb-3" style="max-width: 540px">
     <div class="row no-gutters">
+      <!-- Card Image -->
       <div class="col-md-4">
         <img
           src="/images/<%= product.image_groups[0].images[0].link%>"
@@ -7,18 +8,20 @@
           alt="<%= product.image_groups[0].images[0].alt%>"
         />
       </div>
+      <!-- Card Body -->
       <div class="col-md-8">
         <div class="card-body d-flex flex-column">
           <h5 class="card-title"><%= product.name %></h5>
           <p class="card-text">
             <%- product.short_description %>
           </p>
-
+          <!-- Card footer -->
           <div class="card-footer bg-transparent border-dark mt-auto">
             <div class="row">
               <div class="col sm-6">
                 <p>Price: <%= product.price %> <%= product.currency %></p> 
               </div>
+            <!-- More Info Button-->
               <div class="col sm-6">
                 <a href="/product/<%= product.primary_category_id %>/<%= product.id %>" class="btn btn-primary">More Info <i class="fa-solid fa-circle-info"></i></a>
               </div>

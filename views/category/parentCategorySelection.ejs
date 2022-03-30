@@ -6,13 +6,14 @@
 <div class="container">
   
     <%- include("../partials/breadcrumb.ejs", {breadcrumbObjects})%>
-
+  <!-- Display main category name and description -->
     <div class="p-3">
       <h1><%= mainCategoryData.name %></h1>
       <hr>
       <p><b><%= mainCategoryData.page_description %></b></p>
     </div>
     <br>
+<!-- display categories one by one -->
 <% parentCategories.forEach( category => { %>
 
   <div class="shadow p-3 mb-5 bg-white rounded">

@@ -10,7 +10,6 @@ function addBorder(id, className) {
   id.style.border = "2px solid black";
   let variationKey = id.getAttribute("variation-id");
   let variationValue = id.getAttribute("value");
-  let variationName = id.getAttribute("name");
   variationObj[`${variationKey}`] = variationValue;
 }
 
@@ -41,7 +40,7 @@ async function addToCard() {
 
       if (responseData.error) {
         if (responseData.error === "Invalid Token") {
-          errorMessageEl.textContent = "Please login to your account first.";
+          alert("Please login to your account first.");
         } else {
           errorMessageEl.textContent = responseData.error;
         }
@@ -84,7 +83,7 @@ async function addToWishlist() {
 
       if (responseData.error) {
         if (responseData.error === "Invalid Token") {
-          errorMessageEl.textContent = "Please login to your account first.";
+          alert("Please login to your account first.");
         } else {
           errorMessageEl.textContent = responseData.error;
         }

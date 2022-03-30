@@ -10,6 +10,7 @@
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-10">
               <div class="card" style="border-radius: 10px;">
+                <!-- thank you message -->
                 <div class="card-header px-4 py-5">
                   <h5 class="text-muted mb-0">Thanks for your Orders...</h5>
                 </div>
@@ -17,7 +18,7 @@
                   <div class="d-flex align-items-center mb-4">
                     <p class="lead fw-normal mb-0 text-muted"><b>Order History</b></p>
                   </div>
-
+                  <!-- If there are order cards print them one by one -->
                   <% if ( orderCards.length > 0 ) { %>
                     <% orderCards.forEach( orderCard => { %>
                       <div class="card shadow-0 border mb-4">
@@ -28,6 +29,7 @@
                               <p class="text-muted"><%= orderCard.id %></p>
                             </div>
                             <div class="col-9">
+                              <!-- print order products one by one -->
                               <% orderCard.orderProducts.forEach( orderProduct => { %>
                                 <div class="row">
                                   <div class="col-3 text-center">
@@ -54,7 +56,7 @@
                      
                     <% }) %>
 
-                  <% } else {  %>
+                  <% } else {  %> <!-- Show there is no order message-->
                     <div class="container h-100">
                       <div class="row h-100 justify-content-center">
                         <p>There is no order to see.</p>

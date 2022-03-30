@@ -1,5 +1,6 @@
 <h5><%= variationName %></h5>
 <div class="row mb-2">
+    <!-- Print variations element one by one -->
     <% for(let i = 0; i< variationValuesArr.length; i++) { %>
         <div variation-id="<%= variationId %>" class="<%= variationId %>-card variation card bg-light ml-3 mb-2" onclick="addBorder(this,'<%= variationId %>-card')" value="<%=variationValuesArr[i].value%>" name="<%=variationValuesArr[i].name%>">
             <div class="card-body text-center">
