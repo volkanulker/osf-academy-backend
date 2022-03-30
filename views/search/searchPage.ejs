@@ -1,192 +1,27 @@
 <%- include("../partials/headUpper.ejs",{title:'Alibazon - Search'}) %>
 <link rel="stylesheet" href="/stylesheets/search.css" />
 
-<%- include("../partials/headBottom.ejs") %>
+<%- include("../partials/headBottom.ejs") %> 
 <%- include("../partials/nav.ejs") %>
+
 <div class="container">
-     
+    
     <%- include("./searchbar.ejs") %> 
     <%- include('./spinner.ejs') %>
 
+    <!-- Search Results -->
     <div class="row justify-content-center">
         <div id="searchResults"></div>
         <div><p class="text-danger" id="message"></p></div>
     </div>
+
+    <%- include("./moreResultsButton.ejs") %>
+
 </div>
 
-<%-include("../partials/footer.ejs") %>
+<%-include("../partials/footer.ejs") %> 
+
 <%- include('../partials/bottom.ejs') %>
 
-<script>
-    async function addToCart(elementRef) {
-        const resultCardEl = elementRef.closest(".result-card");
-        const productId = resultCardEl.getAttribute("product-id");
-        const variantId = resultCardEl.getAttribute("variant-id");
+<script src="/javascripts/searchPageScript.js"></script>
 
-        try {
-            const quantity = 1;
-            const res = await fetch("/cart/add-item", {
-                method: "POST",
-                body: JSON.stringify({ productId, variantId, quantity }),
-                headers: { "Content-Type": "application/json" },
-            });
-
-            const responseData = await res.json();
-
-            if (responseData.error) {
-                if (responseData.error === "Invalid Token") {
-                    alert("Please login to your account first.");
-                } else {
-                    alert(responseData.error);
-                }
-            }
-            if (responseData.data) {
-                alert("Product is added to the cart!");
-            }
-        } catch (err) {
-            alert("An error occured when adding item to the cart");
-        }
-    }
-
-    async function addToWishlist(elementRef) {
-        const resultCardEl = elementRef.closest(".result-card");
-        const productId = resultCardEl.getAttribute("product-id");
-        const variantId = resultCardEl.getAttribute("variant-id");
-
-        try {
-            const quantity = 1;
-            const res = await fetch("/wishlist/add-item", {
-                method: "POST",
-                body: JSON.stringify({ productId, variantId, quantity }),
-                headers: { "Content-Type": "application/json" },
-            });
-
-            const responseData = await res.json();
-
-            if (responseData.error) {
-                if (responseData.error === "Invalid Token") {
-                    alert("Please login to your account first.");
-                } else {
-                    alert(responseData.error);
-                }
-            }
-            if (responseData.data) {
-                alert("Product is added to the wishlist!");
-            }
-        } catch (err) {
-            alert("An error occured please try again later.");
-        }
-    }
-</script>
-
-<script>
-    function getNumberOfItemToDisplay(productArr){
-        if(productArr.length > 25){
-            return 25
-        }
-        return productArr.length
-    }
-</script>
-
-
-<script>
-    const form = document.querySelector("form");
-    const spinnerEl = document.getElementById("spinner");
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        // get values
-        const searchResultsEl = document.getElementById("searchResults");
-        const productName = form.productname.value;
-        const messageEl = document.getElementById("message");
-        messageEl.textContent = "";
-        searchResultsEl.innerHTML = "";
-        // check product name with regex
-        let match = productName.match(/^[a-zA-Z]*/);
-        let match2 = productName.match(/\s*/);
-        if (match2[0] === productName) {
-            messageEl.textContent = "No product found by this name";
-            return;
-        }
-        if (match[0] === productName) {
-            try {
-                // show spinner div
-                spinnerEl.classList.add("busy");
-                // wait for response
-                const res = await fetch("/search", {
-                    method: "POST",
-                    body: JSON.stringify({ productName }),
-                    headers: { "Content-Type": "application/json" },
-                });
-                // get payload
-                const payload = await res.json();
-                spinnerEl.classList.remove("busy");
-                let numberOfItemToDisplay = getNumberOfItemToDisplay(payload.data)
-                console.log(numberOfItemToDisplay)
-                // check length of payload
-                if (payload.data.length === 0) {
-                    messageEl.textContent = "No product found by this name";
-                } else {
-                    // print products filtered products to screen
-                    payload.data.forEach((product) => {
-
-                        if(! (typeof product.variants[0] === 'undefined') )
-                        {
-                                let productCard = `
-                            <div class="result-card hide" product-id="${product.id}" variant-id="${product.variants[0].product_id}">
-                                <div class="card mb-3 mt-3" style="max-width: 540px">
-                                    <div class="row no-gutters">
-                                    <div class="col-md-4">
-                                        <img
-                                        src="/images/${product.image_groups[0].images[0].link}"
-                                        class="card-img"
-                                        alt="${product.image_groups[0].images[0].alt}"
-                                        />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">${product.name}</h5>
-                                            <p class="card-text">
-                                                ${product.short_description}
-                                                <br>
-                                                <p class="text-muted"><b>Type:</b> ${product.primary_category_id}</p>
-                                                <p class="text-muted"><b>Price:</b> ${product.price} ${product.currency} </p>
-                                            </p>
-                                        </div>
-                                        <div class="card-footer bg-transparent border-dark mt-auto">
-                                            <div class="row">
-                                            <div class="col-6">
-                                                <button class="btn btn-warning add-btn" onclick="addToCart(this)"><i class="fa-solid fa-cart-plus fa-2x"></i></button>
-                                            </div>
-                                            <div class="col-6">
-                                                <button class="btn btn-danger add-btn" onclick="addToWishlist(this)"><i class="fa-solid fa-heart fa-2x"></i></button>
-                                            </div>
-
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                            searchResultsEl.innerHTML += productCard;
-                        }
-
-                    });
-                    
-                    const searchResultCards = searchResultsEl.children
-                    for (let index = 0; index < numberOfItemToDisplay; index++) {
-                        let productCardEl = searchResultCards.item(index)
-                        productCardEl.classList.remove('hide')
-                    }
-                    
-                }
-            } catch (err) {
-                console.log(err)
-                messageEl.textContent = "No product found by this name";
-            }
-        } else {
-            messageEl.textContent = "No product found by this name";
-        }
-    });
-</script>
