@@ -108,6 +108,7 @@ module.exports.getProductDetails = (req, res, next) => {
             paths,
             "/product"
         );
+
         return res.render("./product/productDetail", {
             productId,
             name,

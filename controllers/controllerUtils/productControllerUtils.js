@@ -1,6 +1,6 @@
 const breadcrumbUtils = require("../../utils/breadcrumbUtils");
 const { getCategoryById } = require('../../requests/category')
-
+const _ = require("lodash");
 /**
  * Function to pop product id from pop
  * and push product name for understandable breadcrumb navs

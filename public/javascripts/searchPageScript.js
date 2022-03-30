@@ -216,12 +216,14 @@ form.addEventListener("submit", async (e) => {
                         searchResultsEl.innerHTML += productCard;
                     }
                 });
-                let numberOfItemToDisplay = getNumberOfItemToDisplay(productArr);
+                let numberOfItemToDisplay =
+                    getNumberOfItemToDisplay(productArr);
                 printFirstItems(numberOfItemToDisplay);
             }
         } catch (err) {
-            alert('An error occured please try again later.')
-            messageEl.textContent = "An error occured while searching products please try again later.";
+            alert(
+                "An error occured while searching products please try again later."
+            );
         }
     } else {
         messageEl.textContent = "No product found by this name";
