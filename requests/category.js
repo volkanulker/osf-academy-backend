@@ -12,6 +12,10 @@ const urlBase = `${process.env.API_BASE_URL}/categories`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
 
+/**
+ * Function to make get request for get all categories
+ * @param { function } callback 
+ */
 const getAllCategories = (callback) => {
     const url = urlBase + `?secretKey=${secretKey}`;
 
@@ -26,6 +30,11 @@ const getAllCategories = (callback) => {
     });
 };
 
+/**
+ * Function to make get request for get categories by id
+ * @param { string } id 
+ * @param { function } callback 
+ */
 module.exports.getCategoriesByParentId = (id, callback) => {
     const path = `/parent/${id}`;
     const url = urlBase + path + `?secretKey=${secretKey}`;
@@ -40,7 +49,11 @@ module.exports.getCategoriesByParentId = (id, callback) => {
         }
     });
 };
-
+/**
+ * Function to make get request for get category by id
+ * @param { string } categoryId 
+ * @param { function } callback 
+ */
 module.exports.getCategoryById = (categoryId, callback) => {
     const path = `/${categoryId}`;
     const url = urlBase + path + `?secretKey=${secretKey}`;
@@ -55,7 +68,11 @@ module.exports.getCategoryById = (categoryId, callback) => {
         }
     });
 };
-
+/**
+ * Function to make get request for getting all parent categories
+ * @param { string } gender 
+ * @param { function } callback 
+ */
 module.exports.getAllParentCategories = (gender, callback) => {
     getAllCategories((error, data) => {
         if (error) {
@@ -71,7 +88,12 @@ module.exports.getAllParentCategories = (gender, callback) => {
         }
     });
 };
-
+/**
+ * Function to make get request for getting all sub categories
+ * @param { string } gender 
+ * @param { string } parentCategoryName 
+ * @param { function } callback 
+ */
 module.exports.getAllSubCategories = (gender, parentCategoryName, callback) => {
     this.getCategoriesByParentId(
         gender + "-" + parentCategoryName.toLowerCase(),

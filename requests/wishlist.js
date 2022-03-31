@@ -12,6 +12,11 @@ const urlBase = `${process.env.API_BASE_URL}/wishlist`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
 
+/**
+ * Functionn to make get request for getting wishlist
+ * @param { string } token 
+ * @param { function } callback 
+ */
 module.exports.getWishlist = (token, callback) => {
     const url = urlBase + `?secretKey=${secretKey}`;
 
@@ -36,7 +41,14 @@ module.exports.getWishlist = (token, callback) => {
         }
     );
 };
-
+/**
+ * Function to make request for adding item to the wishlist
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { int } quantity 
+ * @param { function } callback 
+ */
 module.exports.addItem = (token, productId, variantId, quantity, callback) => {
     const url = urlBase + "/addItem" + `?secretKey=${secretKey}`;
 
@@ -67,7 +79,13 @@ module.exports.addItem = (token, productId, variantId, quantity, callback) => {
         }
     );
 };
-
+/**
+ * Function make request for removing data from wishlist
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { function } callback 
+ */
 module.exports.removeItem = (token, productId, variantId, callback) => {
     const url = urlBase + "/removeItem" + `?secretKey=${secretKey}`;
     request(
@@ -97,6 +115,14 @@ module.exports.removeItem = (token, productId, variantId, callback) => {
     );
 };
 
+/**
+ * Function make request for wishlist item quantity
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { int } quantity 
+ * @param { function } callback 
+ */
 module.exports.changeItemQuantity = (
     token,
     productId,

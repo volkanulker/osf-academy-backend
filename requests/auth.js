@@ -15,6 +15,13 @@ const secretKey = process.env.SECRET_KEY;
 
 const errMessage = "Unable to connect to the Backend Service!";
 
+/**
+ * Function to make signup request
+ * @param { string } name 
+ * @param { string } email 
+ * @param { string } password 
+ * @param { function } callback 
+ */
 module.exports.signup = (name, email, password, callback) => {
     const url = urlBase + "/signup";
 
@@ -42,7 +49,12 @@ module.exports.signup = (name, email, password, callback) => {
         }
     );
 };
-
+/**
+ * Function to make signin request 
+ * @param { string } email 
+ * @param { password } password 
+ * @param { function } callback 
+ */
 module.exports.signin = (email, password, callback) => {
     const url = urlBase + "/signin";
 
@@ -70,6 +82,12 @@ module.exports.signin = (email, password, callback) => {
     );
 };
 
+/**
+ * Function to get jwt token
+ * @param { string } email 
+ * @param { passwrod } password 
+ * @param { function } callback 
+ */
 module.exports.getToken = (email, password, callback) => {
     const url = urlBase + "/signin";
 

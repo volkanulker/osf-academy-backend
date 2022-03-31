@@ -12,6 +12,11 @@ const urlBase =`${process.env.API_BASE_URL}/orders`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
 
+/**
+ * Functionto get make request for getting all orders
+ * @param { string } token 
+ * @param { function } callback 
+ */
 module.exports.getOrders = (token, callback) => {
     const url = urlBase + `?secretKey=${secretKey}`;
 
@@ -36,7 +41,13 @@ module.exports.getOrders = (token, callback) => {
         }
     );
 };
-
+/**
+ * Function to make request for creating order 
+ * @param { string } token 
+ * @param { string } paymentId 
+ * @param { object[] } items 
+ * @param { function } callback 
+ */
 module.exports.createOrder = (token, paymentId, items, callback) => {
     const url = urlBase;
     const rndAddress = "an address"

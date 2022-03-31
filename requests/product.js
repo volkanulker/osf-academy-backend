@@ -11,7 +11,11 @@ Sentry.init({
 const urlBase = `${process.env.API_BASE_URL}/products/product_search`;
 const secretKey = process.env.SECRET_KEY;
 const errMessage = "Unable to connect to the Backend Service!";
-
+/**
+ * Function to make request for getting product by id
+ * @param { string } id 
+ * @param { function } callback 
+ */
 module.exports.getProductById = (id, callback) => {
     const url = `${urlBase}?id=${id}&secretKey=${secretKey}`;
 
@@ -25,7 +29,11 @@ module.exports.getProductById = (id, callback) => {
         }
     });
 };
-
+/**
+ * Function to make request for getting products page by page
+ * @param { int } pageNo 
+ * @param { function } callback 
+ */
 const getProductsByPage = (pageNo, callback) => {
     let url = `${urlBase}?page=${pageNo}&secretKey=${secretKey}`;
     request({ url: url, json: true }, (error, response) => {
@@ -38,10 +46,13 @@ const getProductsByPage = (pageNo, callback) => {
         }
     });
 };
-/*
+
+
+/**
  * Make request to api one by one to find total number of page
  * in the api dynamically if no data.error returned by the url
  * catch error and stop while loop then get promise array
+ * @param { function } callback 
  */
 module.exports.getAllProducts = async (callback) => {
     var productArr = [];
@@ -69,7 +80,12 @@ module.exports.getAllProducts = async (callback) => {
     }
     callback(undefined, productArr);
 };
-
+/**
+ * Function to make request for getting product by category id
+ * @param { string } id 
+ * @param { int } pageNo 
+ * @param { function } callback 
+ */
 module.exports.getProductByCategoryId = (id, pageNo, callback) => {
     const url = `${urlBase}?primary_category_id=${id}&page=${pageNo}&secretKey=${secretKey}`;
 

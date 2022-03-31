@@ -14,7 +14,11 @@ const secretKey = process.env.SECRET_KEY;
 
 const errMessage = "Unable to connect to the Backend Service!";
 
-
+/**
+ * Function to make get cart request
+ * @param { string } token 
+ * @param { function } callback 
+ */
 module.exports.getCart = (token, callback) => {
     const url = urlBase + `?secretKey=${secretKey}`;
 
@@ -40,6 +44,14 @@ module.exports.getCart = (token, callback) => {
     );
 };
 
+/**
+ * Function to make add item request
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { int } quantity 
+ * @param { function } callback 
+ */
 module.exports.addItem = (token, productId, variantId, quantity, callback) => {
     const url = urlBase + "/addItem" + `?secretKey=${secretKey}`;
 
@@ -70,7 +82,13 @@ module.exports.addItem = (token, productId, variantId, quantity, callback) => {
         }
     );
 };
-
+/**
+ * Function to make remove item request
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { function } callback 
+ */
 module.exports.removeItem = (token, productId, variantId, callback) => {
     const url = urlBase + "/removeItem" + `?secretKey=${secretKey}`;
     request(
@@ -100,6 +118,14 @@ module.exports.removeItem = (token, productId, variantId, callback) => {
     );
 };
 
+/**
+ * Function to make change item quantity request
+ * @param { string } token 
+ * @param { string } productId 
+ * @param { string } variantId 
+ * @param { int } quantity 
+ * @param { function } callback 
+ */
 module.exports.changeItemQuantity = (
     token,
     productId,
