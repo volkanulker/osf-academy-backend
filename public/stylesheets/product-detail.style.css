@@ -17,6 +17,11 @@
   height: 60px;
 }
 
+.buy-btn {
+  width: 120px;
+  height: 60px;
+}
+
 
 .number-input input[type="number"] {
     -webkit-appearance: textfield;
@@ -103,5 +108,3 @@
       }
     }
   }
-
-

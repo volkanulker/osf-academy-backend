@@ -1,53 +1,71 @@
 <div class="card-block px-2">
     <h4 class="card-title"><%= name %></h4>
     <div class="card-body">
-      <p class="card-text"><%- description %></p>
+        <p class="card-text"><%- description %></p>
 
-      <% variationAttributesArr.forEach( variation => { %>
+        <% variationAttributesArr.forEach( variation => { %>
         <!-- Display product variations -->
         <%-include("./variationsCard.ejs", {variationName:
         variation.name,variationValuesArr:variation.values,
-        variationId:variation.id }) %> 
+        variationId:variation.id }) %> <% }) %>
 
-      <% }) %>
- 
-      <div class="row mt-5">
-        <!-- Add to Wishlist Button -->
-        <div class="col-3">
-          <button class="btn btn-danger add-btn" onclick="addToWishlist()">
-            <i class="fa-solid fa-heart fa-2x"></i></i>
-          </button>
-        </div>
-        <!-- Add to Card Button -->
-        <div class="col-3">
-          <button
-            id="add-to-card"
-            onclick="addToCard()"
-            class="btn btn-warning add-btn"
-          >
-            <i class="fa-solid fa-cart-plus fa-2x"></i>
-          </button>
-        </div>
-        <div class="col-6">
-          <div class="row">
-            <div class="col-6 align-self-center">
-              <!-- Display price -->
-            <p class="text-muted">
-              <b>Price:</b> <%= price %> <%= currency %>
-            </p>
+        <div class="card-body mt-3">
+            <div class="row">
+                <h5>Price</h5>
+                <div class="col-1">
+                    <h5 class="text-success text-center">
+                        <b><%= price %></b>
+                    </h5>
+                </div>
+                <div class="col-3">
+                    <select
+                        class="form-select form-select-sm rounded"
+                        aria-label=".form-select-sm example"
+                    >
+                        <option selected><%= currency %></option>
+                    </select>
+                </div>
             </div>
-            
-          </div>
         </div>
-      </div>
+        <div class="row mt-5">
+            <!-- Add to Wishlist Button -->
+            <div class="col-3">
+                <button
+                    class="btn btn-danger add-btn"
+                    onclick="addToWishlist()"
+                >
+                    <i class="fa-solid fa-heart fa-2x"></i>
+                </button>
+            </div>
+            <!-- Add to Card Button -->
+            <div class="col-3">
+                <button
+                    id="add-to-card"
+                    onclick="addToCard()"
+                    class="btn btn-warning add-btn"
+                >
+                    <i class="fa-solid fa-cart-plus fa-2x"></i>
+                </button>
+            </div>
+            <!-- Buy Now button-->
+            <div class="col-6">
+                <button class="btn btn-primary buy-btn rounded" onclick="buyNow()">
+                    <div class="col">
+                        Buy Now
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
 
-      <!-- Display error message -->
-      <div class="mt-5">
-        <div class="row justify-content-center"> 
-            <b><h5 id="error-message" class="text-danger bg-dark"></h5></b>
-            <b><h5 id="success-message" class="text-success bg-dark"></h5></b>
+        <!-- Display error message -->
+        <div class="mt-5">
+            <div class="row justify-content-center">
+                <b><h5 id="error-message" class="text-danger bg-dark"></h5></b>
+                <b
+                    ><h5 id="success-message" class="text-success bg-dark"></h5
+                ></b>
+            </div>
         </div>
-      </div>
-      
     </div>
-  </div>
+</div>

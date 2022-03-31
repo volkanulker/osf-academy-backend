@@ -26,6 +26,8 @@
 <%- include('../../partials/bottom.ejs') %>
 
 <script>
-    const productId =  <%= productId %>
+    const productId =  <%- JSON.stringify(productId)  %>
+    const productName = <%- JSON.stringify(name) %>
+    const price = <%- JSON.stringify(price) %>
 </script>
 <script src="/javascripts/productDetailScript.js"></script>

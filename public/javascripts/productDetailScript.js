@@ -118,3 +118,54 @@ async function addToWishlist() {
         }
     }
 }
+
+/**
+ * Function to buy product now
+ */
+async function buyNow() {
+    let errorMessageEl = document.getElementById("error-message");
+    errorMessageEl.textContent = "";
+    try {
+        const res = await fetch("/product/get-variation-id", {
+            method: "POST",
+            body: JSON.stringify({ variationObj, productId }),
+            headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        if (data.error) {
+            errorMessageEl.textContent = data.error;
+        }
+        if (data.variantId) {
+            fetch("/payment/create-checkout-session", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items: [
+                        {
+                            id: productId,
+                            quantity: 1,
+                            price,
+                            name: productName,
+                        },
+                    ],
+                }),
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    return res.json().then((json) => Promise.reject(json));
+                })
+                .then(({ url }) => {
+                    window.location = url;
+                })
+                .catch((e) => {
+                    errorMessageEl.textContent = e.error;
+                });
+        }
+    } catch (e) {
+        errorMessageEl.textContent = e.error;
+    }
+}
