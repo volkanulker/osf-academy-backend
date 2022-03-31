@@ -1,7 +1,11 @@
 let variationObj = {};
 const errorMessageEl = document.getElementById("error-message");
 const successMessageEl = document.getElementById("success-message");
-
+/**
+ * Function to add border to clicked variant value
+ * @param { int } id
+ * @param { string } className
+ */
 function addBorder(id, className) {
     var x = document.getElementsByClassName(className);
     for (i = 0; i < x.length; i++) {
@@ -12,7 +16,10 @@ function addBorder(id, className) {
     let variationValue = id.getAttribute("value");
     variationObj[`${variationKey}`] = variationValue;
 }
-
+/**
+ * Function to add product to cart
+ *
+ */
 async function addToCard() {
     errorMessageEl.textContent = "";
     successMessageEl.textContent = "";
@@ -46,16 +53,24 @@ async function addToCard() {
                 }
             }
             if (responseData.data) {
-                successMessageEl.textContent = "Product is added to the cart!";
+                alert("Product is added to the cart!");
             }
 
             window.location.reload();
         }
     } catch (err) {
-        errorMessageEl.textContent = err;
+        if (err.message === "productId is not defined") {
+            errorMessageEl.textContent =
+                "No variation found for this product, please try to add later.";
+        } else {
+            errorMessageEl.textContent = err;
+        }
     }
 }
-
+/**
+ * Function to add product to wishlist
+ *
+ */
 async function addToWishlist() {
     errorMessageEl.textContent = "";
     successMessageEl.textContent = "";
@@ -89,13 +104,17 @@ async function addToWishlist() {
                 }
             }
             if (responseData.data) {
-                successMessageEl.textContent =
-                    "Product is added to the wishlist!";
+                alert("Product is added to the wishlist!");
             }
 
             window.location.reload();
         }
     } catch (err) {
-        errorMessageEl.textContent = err;
+        if (err.message === "productId is not defined") {
+            errorMessageEl.textContent =
+                "No variation found for this product, please try to add later.";
+        } else {
+            errorMessageEl.textContent = err;
+        }
     }
 }

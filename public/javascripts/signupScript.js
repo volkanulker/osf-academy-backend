@@ -1,6 +1,8 @@
 const form = document.querySelector("form");
 const errorEl = document.querySelector(".signup.error");
-
+/**
+ * Function to submit signup form
+ */
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 

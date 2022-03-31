@@ -1,3 +1,6 @@
+/**
+ * Function of make payment button
+ */
 function makePayment() {
     let errorMessageEl = document.getElementById("error-message");
     errorMessageEl.textContent = "";

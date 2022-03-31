@@ -1,3 +1,7 @@
+/**
+ * Function to delete wish item
+ * @param { HTML element } elementRef 
+ */
 async function deleteItem(elementRef) {
     const parentClassEl = elementRef.closest(".wish-card");
     const productId = parentClassEl.getAttribute("product-id");
@@ -31,8 +35,11 @@ async function deleteItem(elementRef) {
         errorMessageEl.textContent = err;
     }
 }
-
-async function addToCard(elementRef) {
+/**
+ * Function to add wish item to the cart
+ * @param { HTML element} elementRef 
+ */
+async function addToCart(elementRef) {
     const parentClassEl = elementRef.closest(".wish-card");
     const productId = parentClassEl.getAttribute("product-id");
     const successMessageEl = document.getElementById(

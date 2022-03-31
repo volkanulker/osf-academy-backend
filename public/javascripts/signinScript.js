@@ -1,6 +1,10 @@
+// HTML elements
 const form = document.querySelector("form");
 const errorEl = document.querySelector(".signin.error");
 
+/**
+ * Function to submit signin form
+ */
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 

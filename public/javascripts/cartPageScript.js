@@ -1,3 +1,7 @@
+/**
+ * Function to decrease quantity of clicked element
+ * @param { HTML element} elementRef 
+ */
 async function decreaseQuantity(elementRef) {
     const quantityEl = elementRef.parentNode.querySelector(".quantity");
     let quantityValue = parseInt(quantityEl.getAttribute("value"));
@@ -26,6 +30,10 @@ async function decreaseQuantity(elementRef) {
     }
 }
 
+/**
+ * Function to increase quantity of clicked element
+ * @param { HTML element} elementRef 
+ */
 async function increaseQuantity(elementRef) {
     const quantityEl = elementRef.parentNode.querySelector(".quantity");
     let quantityValue = parseInt(quantityEl.getAttribute("value"));
@@ -50,7 +58,10 @@ async function increaseQuantity(elementRef) {
         messageEl.textContent = err;
     }
 }
-
+/**
+ * Function to delete clicked element
+ * @param { HTML element} elementRef 
+ */
 async function deleteItem(elementRef) {
     let numbOfItemEl = document.getElementById("numb-of-items");
     let numbOfItemValue = parseInt(numbOfItemEl.textContent);
