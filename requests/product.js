@@ -70,7 +70,9 @@ module.exports.getAllProducts = async (callback) => {
         })
             .catch((errorMessage) => {
                 isAllPageSearched = true;
-                Sentry.captureException(new Error(errorMessage));
+                // There is no need to add to sentry
+                // that exception because
+                // we know that exception will be throwed
             })
             .then((d) => {
                 productArr.push(d);

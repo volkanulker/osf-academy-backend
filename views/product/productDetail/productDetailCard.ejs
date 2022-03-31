@@ -1,0 +1,53 @@
+<div class="card-block px-2">
+    <h4 class="card-title"><%= name %></h4>
+    <div class="card-body">
+      <p class="card-text"><%- description %></p>
+
+      <% variationAttributesArr.forEach( variation => { %>
+        <!-- Display product variations -->
+        <%-include("./variationsCard.ejs", {variationName:
+        variation.name,variationValuesArr:variation.values,
+        variationId:variation.id }) %> 
+
+      <% }) %>
+ 
+      <div class="row mt-5">
+        <!-- Add to Wishlist Button -->
+        <div class="col-3">
+          <button class="btn btn-danger add-btn" onclick="addToWishlist()">
+            <i class="fa-solid fa-heart fa-2x"></i></i>
+          </button>
+        </div>
+        <!-- Add to Card Button -->
+        <div class="col-3">
+          <button
+            id="add-to-card"
+            onclick="addToCard()"
+            class="btn btn-warning add-btn"
+          >
+            <i class="fa-solid fa-cart-plus fa-2x"></i>
+          </button>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6 align-self-center">
+              <!-- Display price -->
+            <p class="text-muted">
+              <b>Price:</b> <%= price %> <%= currency %>
+            </p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Display error message -->
+      <div class="mt-5">
+        <div class="row justify-content-center"> 
+            <b><h5 id="error-message" class="text-danger bg-dark"></h5></b>
+            <b><h5 id="success-message" class="text-success bg-dark"></h5></b>
+        </div>
+      </div>
+      
+    </div>
+  </div>

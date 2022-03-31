@@ -1,6 +1,7 @@
 <div class="main-card bg-light mt-3 p-3">
     <div class="row">
         <div class="col-10">
+            <!-- Cart Header-->
             <div class="row">
                 <div class="col p-4">
                     <div class="text-muted">
@@ -35,6 +36,7 @@
                 class="cart-card"
             >
                 <div class="row">
+                    <!-- Card Image-->
                     <div class="col-2 text-center">
                         <div class="text-muted">
                             <b><%= cartObj.name %></b>
@@ -44,11 +46,11 @@
                             src="/images/<%= cartObj.image.link %>"
                         />
                     </div>
-
+                    <!-- Card Description -->
                     <div class="col-4 align-self-center">
                         <div class="text-muted"><%= cartObj.description %></div>
                     </div>
-
+                    <!-- Card Buttons -->
                     <div class="col-3 align-self-center">
                         <div class="def-number-input number-input safari_only">
                             <button
@@ -71,7 +73,7 @@
                             ></button>
                         </div>
                     </div>
-
+                    <!-- Card Price -->
                     <div class="col-3 align-self-center">
                         <div
                             price-value="<%= cartObj.price %>"

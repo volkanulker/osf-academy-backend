@@ -1,0 +1,31 @@
+<%- include("../../partials/headUpper.ejs",{title:'Alibazon - Product Detail'}) %>
+
+<link rel="stylesheet" href="/stylesheets/product-detail.style.css" />
+
+<%- include("../../partials/headBottom.ejs") %> 
+<%- include('../../partials/nav.ejs') %>
+<div class="container h-100 mb-5">
+    <%-include('../../partials/breadcrumb.ejs', {breadcrumbObjects:breadcrumbObjects}) %>
+
+    <div class="shadow-lg p-5 mb-2 .bg-secondary rounded">
+        <div class="row align-items-center h-100">
+            <!-- Carousel -->
+            <div class="col-4 mx-auto">
+                <%- include('./imgCraousel.ejs') %>
+            </div>
+            <!-- Product Details Card -->
+            <div class="col-8 mx-auto">
+                <%- include('./productDetailCard.ejs') %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../../partials/footer.ejs') %>
+</div>
+
+<%- include('../../partials/bottom.ejs') %>
+
+<script>
+    const productId =  <%= productId %>
+</script>
+<script src="/javascripts/productDetailScript.js"></script>
