@@ -13,7 +13,7 @@ const apiErrorMessage = "An API service error is occured.";
 
 module.exports.createCheckoutSession = async (req, res) => {
     const productsToBuy = req.body.items;
-    const jwt = req.body.jwt
+    const jwt = req.cookies.jwt
     if(!jwt){
         return res.status(401).json({ error: 'Please login to your account first' })
     }
