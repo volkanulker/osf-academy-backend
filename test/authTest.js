@@ -12,7 +12,7 @@ chai.use(chaiHttp);
  * @param { int } length 
  * @returns 
  */
-function generateUniqueEmail(length) {
+function generateUniqueEmail() {
     return  crypto.randomBytes(12).toString('hex');
 }
 
