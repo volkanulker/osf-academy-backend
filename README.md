@@ -12,6 +12,44 @@ Developing an e-commerce site called `Alibazon`
 - Deployment to `Heroku`
 - `CI` with `Buddy Works`
 
-HOME PAGE
 
-![Home Page](https://github.com/volkanulker/osf-academy-backend/project-images/home-page.png?raw=true)
+## <b> Some images from Project </b>
+
+
+### <b> HOME PAGE </b>
+![Home Page](./project-images/home-page.png?raw=true)
+
+### <b> Parent Categories </b>
+![Parent Categories](./project-images/parent-categories.png?raw=true)
+
+### <b> Subcategories </b>
+![Sub Categories](./project-images/sub-categories.png?raw=true)
+
+### <b> Product Detail Page </b>
+![Product Detail Page](./project-images/product-detail-page.png?raw=true)
+
+### <b>Wishlist</b>
+![Wishlist Page](./project-images/wishlist-page.png?raw=true)
+
+### <b> Cart</b>
+![Product Detail Page](./project-images/cart-page.png?raw=true)
+
+### <b> Payment Page </b>
+![Payment Page](./project-images/payment-page.png?raw=true)
+
+### <b> Successfull Payment </b>
+![Successfull Payment Page](./project-images/success-payment-page.png?raw=true)
+
+### <b> Payment Failed  </b>
+![Payment Failed Page](./project-images/payment-failed-page.png?raw=true)
+
+### <b> Order Page  </b>
+![Order Page](./project-images/order-page.png?raw=true)
+
+### Authentication Images
+![Signup Page](./project-images/signup.png?raw=true)
+
+![Signin Page](./project-images/signin.png?raw=true)
+
+### <b> Profile Page  </b>
+![Order Page](./project-images/profile-page.png?raw=true)
